@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.setting.SettingFragment">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/background" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarThumbVertical="@android:color/white"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="399dp"
+            android:layout_height="667dp"
+            android:id="@+id/tblayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageView4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text3"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Speed Units"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+                <Spinner
+                    android:id="@+id/SpeedUnits"
+                    android:layout_column="2"
+                    android:textAlignment="center"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#C1C1C1" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text7"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Acce. Units"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+                <Spinner
+                    android:id="@+id/accelerationUnits"
+                    android:layout_column="2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#C1C1C1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text6"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Dist. Units"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+                <Spinner
+                    android:id="@+id/distanceUnits"
+                    android:layout_column="2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#C1C1C1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textAlignment="center" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text5"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Time Units"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+            <Spinner
+                android:id="@+id/timeUnits"
+                android:layout_column="2"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="24dp"
+                android:background="#C1C1C1"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:textAlignment="center" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text4"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Height Units"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+                <Spinner
+                    android:id="@+id/heightUnits"
+                    android:layout_column="2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#C1C1C1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.625"
+                    android:textAlignment="center" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/unit_text8"
+                    android:layout_width="185dp"
+                    android:layout_height="40dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Font Size"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+                <Spinner
+                    android:id="@+id/FontUnits"
+                    android:layout_column="2"
+                    android:layout_width="150dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="24dp"
+                    android:background="#C1C1C1"
+                    android:textAlignment="center" />
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <CheckBox
+                    android:id="@+id/checkBox3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Bold"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+
+            </TableRow>
+
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="15dp"
+                android:text="Italic"
+                android:textColor="#FFFFFF"
+                android:textSize="22sp" />
+
+            <TableRow>
+
+
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:id="@+id/speed_text"
+                    android:layout_width="220dp"
+                    android:layout_height="42dp"
+                    android:layout_column="1"
+                    android:layout_marginTop="24dp"
+                    android:inputType="textPersonName"
+                    android:text="Speed Font 21 sp"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="22sp" />
+
+
+            </TableRow>
+
+            <TableRow>
+                <SeekBar
+                    android:id="@+id/seekBar2"
+                    android:layout_column="1"
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_span="2"
+                    android:max="4"
+                    android:progress="2" />
+
+            </TableRow>
+
+            <TableRow>
+
+                <Button
+                    android:id="@+id/save_settings_btn"
+                    android:layout_width="341dp"
+                    android:layout_height="49dp"
+                    android:layout_column="1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_span="2"
+                    android:text="Save Settings" />
+            </TableRow>
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="93dp"
+                    android:layout_column="2"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="20dp"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="8sp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

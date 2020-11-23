@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_dashboard"
+        android:icon="@drawable/dash_icon"
+        android:title="Dashboard" />
+
+    <item
+        android:id="@+id/navigation_map"
+        android:icon="@drawable/map_icon"
+        android:title="Map" />
+
+    <item
+        android:id="@+id/navigation_graph"
+        android:checkable="false"
+        android:checked="false"
+        android:icon="@drawable/data_icon"
+        android:iconTint="#FFFFFF"
+        android:title="Data" />
+
+    <item
+        android:id="@+id/navigation_info"
+        android:icon="@drawable/info_icon"
+        android:title="Info" />
+
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/settings_icon"
+        android:title="Settings" />
+
+</menu>

@@ -1,0 +1,61 @@
+<resources>
+    <string name="app_name">TestApp</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="fontsize_array">
+        <item>small</item>
+        <item>medium</item>
+        <item>large</item>
+    </string-array>
+    <string-array name="speedmeasure_array">
+        <item>m/s</item>
+        <item>km/h</item>
+        <item>mph</item>
+        <item>smoots/microcentury</item>
+    </string-array>
+    <string-array name="timemeasure_array">
+        <item>secs</item>
+        <item>mins</item>
+        <item>hours</item>
+        <item>days</item>
+    </string-array>
+    <string-array name="heightmeasure_array">
+        <item>meters</item>
+        <item>kms</item>
+        <item>miles</item>
+        <item>feet</item>
+    </string-array>
+    <string-array name="distancemeasure_array">
+        <item>meters</item>
+        <item>kms</item>
+        <item>miles</item>
+        <item>feet</item>
+    </string-array>
+    <string-array name="accelerationmeasure_array">
+        <item>m/s^2</item>
+        <item>miles/s^2</item>
+        <item>feet/s^2</item>
+        <item>gal</item>
+    </string-array>
+    <string-array name="turbomultiplier_array">
+        <item>x2</item>
+        <item>x5</item>
+        <item>x10</item>
+        <item>x50</item>
+    </string-array>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome "</string>
+    <string name="invalid_username">"Username cannot be empty!"</string>
+    <string name="invalid_password">"Password must be >5 characters"</string>
+    <string name="login_failed">"Login failed - Invalid username/password combination!"</string>
+    <string name="preference_file_key">shared_pref</string>
+
+</resources>

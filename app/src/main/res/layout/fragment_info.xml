@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.info.InfoFragment">
+
+    <ImageView
+        android:id="@+id/imageView9"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@android:drawable/screen_background_dark"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="-16dp" />
+
+    <!--Source on how to use scrollbars in XML: https://stackoverflow.com/questions/10608234/how-to-add-a-vertical-scroll-bar-to-android-layout-when-there-many-children-in-t -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbarThumbVertical="@android:color/white"
+        android:orientation="vertical">
+
+    <TableLayout
+        android:layout_width="399dp"
+        android:layout_height="667dp"
+        android:id="@+id/tblayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="App Permissions"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Allow the Device to Access your location and internet to enable the speed calculator and map view"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="Stop, Start, and Reset"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Tap the 'GO' button to start tracking your speed"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Tap the 'Pause' button to pause tracking your speed"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Tap reset button to reset distance travelled and the app's timer"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Choose a TURBO value (multiplier) and press the TURBO button to enter TURBO mode"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="Changing Settings"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Toggle settings by tapping the 'Settings' button in the bottom right corner"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Change the units for speed, time, distance, acceleration, and altitude with the dropdown menus"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Change the font size for speed by swiping the Seekbar to increase or decrease Font size."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Change the font size for all other text using the dropdown to select a Font size. You can also select Bold or italics font options!"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•Click the Save Settings buttons to have your preferences automatically loaded on your next log-in!"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="Map and Data"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•View a real time map of your travels in the map tab."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:text="•View a real-time graph of your speed and high scores in the data tab."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="93dp"
+                android:layout_column="2"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="20dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+        </TableRow>
+
+
+    </TableLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
