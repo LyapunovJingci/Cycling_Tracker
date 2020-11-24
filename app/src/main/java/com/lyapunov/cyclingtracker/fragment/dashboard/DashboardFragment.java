@@ -1,6 +1,9 @@
 package com.lyapunov.cyclingtracker.fragment.dashboard;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -24,6 +27,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.lyapunov.cyclingtracker.DatabaseConstruct;
+import com.lyapunov.cyclingtracker.EndActivity;
 import com.lyapunov.cyclingtracker.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
@@ -52,8 +56,7 @@ public class DashboardFragment extends Fragment {
     private TextView altitudeChange;
     private TextView speedChange;
     private Button reset;
-
-
+    private Button stop;
 
     //Units we want to keep track -- made static so reloaded when
     private static double speed;
@@ -224,6 +227,38 @@ public class DashboardFragment extends Fragment {
                 }
                 MapFragment.reset();
                 db.clearDB();
+            }
+        });
+        //TODO:
+        //1. get track image
+        //2. send time, distance, max speed, average speed, track image to End Activity
+        //3. Add firebase
+        //4. Add history activity
+        stop = (Button) view.findViewById(R.id.stop);
+        stop.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext()).
+                        setTitle("End Tracking").setMessage("Are you sure you want to end tracking?").
+                        setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.locationListener.resetDistanceTravelled();//reset distance travelled
+                        smoothedDistance = 0.0;
+                        movingTime.set(0);//reset moving time
+                        stoppedTime.set(0);//reset stopped time
+                        if (isPaused) {//fixing bug: indicators flash if hitting reset button at pausing status
+                            showPausingStatus();
+                        } else {
+                            showStatus();
+                        }
+                        db.clearDB();
+                        Intent intent = new Intent(getContext(), EndActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
             }
         });
 
