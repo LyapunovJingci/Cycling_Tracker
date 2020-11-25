@@ -118,6 +118,7 @@ public class DashboardFragment extends Fragment {
 
         //create database
         db = new DatabaseConstruct(getActivity());
+        db.clearDB();
         Cursor cursor = db.get_Highest();
         Cursor cursor1 = db.get_Lowest();
         if(cursor.getCount() == 0){
@@ -242,6 +243,63 @@ public class DashboardFragment extends Fragment {
                         setTitle("End Tracking").setMessage("Are you sure you want to end tracking?").
                         setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        double[] finishData = new double[3];//total distance, top speed,avg speed,
+                        String[] finishUnit = new String[3];
+                        finishData[0] = smoothedDistance;
+                        Cursor cursor1 = db.get_Highest();
+                        if(cursor1.getCount() !=0){
+                            cursor1.moveToLast();
+                            finishData[1] = cursor1.getDouble(cursor1.getColumnIndex("SPEED"));
+                        }
+                        cursor1.close();
+                        Cursor cursor2 = db.getAverageSpeed();
+                        if (cursor2 != null && cursor2.getCount() > 0) {
+                            cursor2.moveToFirst();
+                            finishData[2] = cursor2.getDouble(0);
+                        }
+                        cursor2.close();
+                        switch(distMeasure){
+                            case KM:
+                                finishUnit[0] = "KM";
+                                finishData[0] /= 1000;
+                                break;
+                            case MILES:
+                                finishUnit[0] = "MILES";
+                                finishData[0] /= 1609;
+                                break;
+                            case FT:
+                                finishUnit[0] = "FT";
+                                finishData[0] *= 3.281;
+                                break;
+                            default:
+                                finishUnit[0] = "M";
+                                break;
+                        }
+                        switch(speedMeasure){
+                            case MPH:
+                                finishUnit[1] = "M/H";
+                                finishUnit[2] = "M/H";
+                                finishData[1] *= 2.237;
+                                finishData[2] *= 2.237;
+                                break;
+                            case KMPH:
+                                finishUnit[1] = "KM/H";
+                                finishUnit[2] = "KM/H";
+                                finishData[1] *= 3.6;
+                                finishData[2] *= 3.6;
+                                break;
+                            case SMC:
+                                finishUnit[1] = "smoots/microcentury";
+                                finishUnit[2] = "smoots/microcentury";
+                                finishData[1] *= 1856.29;
+                                finishData[2] *= 1856.29;
+                                break;
+                            default:
+                                finishUnit[1] = "M/S";
+                                finishUnit[2] = "M/S";
+                                break;
+                        }
+                        double finishTime = movingTime.floatValue();
                         MainActivity.locationListener.resetDistanceTravelled();//reset distance travelled
                         smoothedDistance = 0.0;
                         movingTime.set(0);//reset moving time
@@ -253,6 +311,9 @@ public class DashboardFragment extends Fragment {
                         }
                         db.clearDB();
                         Intent intent = new Intent(getContext(), EndActivity.class);
+                        intent.putExtra("FinishData", finishData);
+                        intent.putExtra("FinishUnit", finishUnit);
+                        intent.putExtra("FinishTime", finishTime);
                         startActivity(intent);
                     }
                 })

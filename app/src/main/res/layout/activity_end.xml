@@ -1,14 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EndActivity">
+    tools:context=".EndActivity"
+    android:background="#3E3E3E"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_emoji_events_white_36dp"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toTopOf="@+id/konfettiView">
+
+    </ImageView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/armata"
+        android:id="@+id/congrat"
+        android:text="Congratulations!"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:gravity="center"
+        android:textColor="@color/speed_color4">
+    </TextView>
+
+    <TextView
+        android:id="@+id/end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:fontFamily="@font/armata"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@id/congrat">
+    </TextView>
+
+    <TextView
+        android:id="@+id/end_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:fontFamily="@font/armata"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@id/end_date">
+    </TextView>
+
+    <TextView
+        android:id="@+id/end_distance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:fontFamily="@font/armata"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@id/end_duration">
+    </TextView>
+
+    <TextView
+        android:id="@+id/end_highspeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:fontFamily="@font/armata"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@id/end_distance">
+    </TextView>
+
+    <TextView
+        android:id="@+id/end_avgspeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/armata"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@id/end_highspeed">
+
+    </TextView>
+
+
+
 
     <nl.dionsegijn.konfetti.KonfettiView
         android:id="@+id/konfettiView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="57dp" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

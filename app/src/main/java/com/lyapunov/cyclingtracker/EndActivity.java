@@ -5,14 +5,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
+
+import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
+import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
-
 public class EndActivity extends AppCompatActivity {
-
+    private DatabaseConstruct db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +44,37 @@ public class EndActivity extends AppCompatActivity {
         };
 
         thread.start();
+
+        double[] finishData = getIntent().getDoubleArrayExtra("FinishData");
+        String[] finishUnit = getIntent().getStringArrayExtra("FinishUnit");
+        double finishTime = getIntent().getDoubleExtra("FinishTime", 0);
+
+        StringBuildHelper stringHelper = new StringBuildHelper();
+        TimeConvertHelper timeHelper = new TimeConvertHelper();
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String date = dateFormat.format(calendar.getTime());
+        TextView end_date = findViewById(R.id.end_date);
+        end_date.setText(date);
+
+        TextView end_duration = findViewById(R.id.end_duration);
+        String duration = stringHelper.buildString("Total Duration: ", timeHelper.convertSecondToDay((int)finishTime));
+        end_duration.setText(duration);
+
+        TextView end_distance = findViewById(R.id.end_distance);
+        String distance = stringHelper.buildString("Distance: ", String.format("%.2f", finishData[0]), " ", finishUnit[0]);
+        end_distance.setText(distance);
+
+        TextView end_highspeed = findViewById(R.id.end_avgspeed);
+        String highSpeed = stringHelper.buildString("Highest Speed: ", String.format("%.2f", finishData[1]), " ", finishUnit[1]);
+        end_highspeed.setText(highSpeed);
+
+        TextView end_avgspeed = findViewById(R.id.end_highspeed);
+        String avgSpeed = stringHelper.buildString("Average Speed: ", String.format("%.2f", finishData[2]), " ", finishUnit[2]);
+        end_avgspeed.setText(avgSpeed);
+
+
 
 
     }
