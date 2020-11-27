@@ -1,10 +1,13 @@
 package com.lyapunov.cyclingtracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
@@ -23,6 +26,9 @@ public class EndActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end);
+
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
 
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);
 
@@ -77,5 +83,30 @@ public class EndActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toobar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.history:
+
+                return true;
+            case R.id.setting:
+
+                return true;
+            case R.id.information:
+                return true;
+            case R.id.log_out:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

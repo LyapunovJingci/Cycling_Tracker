@@ -5,6 +5,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lyapunov.cyclingtracker.fragment.dashboard.locListener;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.navigation.NavController;
@@ -13,6 +14,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import android.location.LocationListener;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -141,6 +146,31 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(
                     this,
                     permissionsToRequest.toArray(new String[0]), REQUEST_PERMISSIONS_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toobar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.history:
+
+                return true;
+            case R.id.setting:
+
+                return true;
+            case R.id.information:
+                return true;
+            case R.id.log_out:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
