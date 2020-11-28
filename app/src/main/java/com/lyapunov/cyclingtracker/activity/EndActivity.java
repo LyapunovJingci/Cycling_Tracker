@@ -17,6 +17,7 @@ import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import nl.dionsegijn.konfetti.KonfettiView;
 import nl.dionsegijn.konfetti.models.Shape;
@@ -24,6 +25,11 @@ import nl.dionsegijn.konfetti.models.Size;
 
 public class EndActivity extends AppCompatActivity {
     private DatabaseConstruct db;
+    public static final String DATE_KEY = "date";
+    public static final String DURATION_KEY = "duration";
+    public static final String DISTANCE_KEY = "distance";
+    public static final String AVGSPEED_KEY = "avg_speed";
+    public static final String HIGHSPEED_KEY = "high_speed";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +88,14 @@ public class EndActivity extends AppCompatActivity {
         String avgSpeed = stringHelper.buildString("Average Speed: ", String.format("%.2f", finishData[2]), " ", finishUnit[2]);
         end_avgspeed.setText(avgSpeed);
 
+        HashMap<String, Object> dataToSave = new HashMap<>();
+        if (finishData != null) {
+            dataToSave.put(DATE_KEY, date);
+            dataToSave.put(DURATION_KEY, (int)finishTime);
+            dataToSave.put(DISTANCE_KEY, finishData[0]);
+            dataToSave.put(AVGSPEED_KEY, finishData[2]);
+            dataToSave.put(HIGHSPEED_KEY, finishData[1]);
+        }
 
 
 

@@ -2,6 +2,7 @@ package com.lyapunov.cyclingtracker.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.dashboard.locListener;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
@@ -14,6 +15,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
 import android.location.LocationListener;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private List<String> providers;
     private final int REQUEST_PERMISSIONS_REQUEST_CODE = 1;//used for requestPermissionsIfNecessary function (source cited below)
     public static String username;
+    private FirebaseAuth mFirebaseAuth;
 
 
     @Override
@@ -54,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         //create location listener
         locationListener = new locListener();
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
 
         //Gets Fine location access permission
@@ -169,10 +176,29 @@ public class MainActivity extends AppCompatActivity {
             case R.id.information:
                 return true;
             case R.id.log_out:
+                if (mFirebaseAuth.getCurrentUser() != null) {
+                    new AlertDialog.Builder(this).
+                        setTitle("Log out").setMessage("Are you sure you want to log out?").
+                        setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mFirebaseAuth.signOut();
+                                logOut();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void logOut() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
 }
