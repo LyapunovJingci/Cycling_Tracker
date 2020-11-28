@@ -3,6 +3,9 @@ package com.lyapunov.cyclingtracker.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,8 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.lyapunov.cyclingtracker.DatabaseConstruct;
+import com.google.firebase.auth.FirebaseAuth;
 import com.lyapunov.cyclingtracker.R;
+import com.lyapunov.cyclingtracker.utility.ConstantValues;
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
 import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
 
@@ -24,12 +28,7 @@ import nl.dionsegijn.konfetti.models.Shape;
 import nl.dionsegijn.konfetti.models.Size;
 
 public class EndActivity extends AppCompatActivity {
-    private DatabaseConstruct db;
-    public static final String DATE_KEY = "date";
-    public static final String DURATION_KEY = "duration";
-    public static final String DISTANCE_KEY = "distance";
-    public static final String AVGSPEED_KEY = "avg_speed";
-    public static final String HIGHSPEED_KEY = "high_speed";
+    private FirebaseAuth mFirebaseAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +36,7 @@ public class EndActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
-
+        mFirebaseAuth = FirebaseAuth.getInstance();
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);
 
         Thread thread = new Thread() {
@@ -90,11 +89,11 @@ public class EndActivity extends AppCompatActivity {
 
         HashMap<String, Object> dataToSave = new HashMap<>();
         if (finishData != null) {
-            dataToSave.put(DATE_KEY, date);
-            dataToSave.put(DURATION_KEY, (int)finishTime);
-            dataToSave.put(DISTANCE_KEY, finishData[0]);
-            dataToSave.put(AVGSPEED_KEY, finishData[2]);
-            dataToSave.put(HIGHSPEED_KEY, finishData[1]);
+            dataToSave.put(ConstantValues.DATE_KEY, date);
+            dataToSave.put(ConstantValues.DURATION_KEY, (int)finishTime);
+            dataToSave.put(ConstantValues.DISTANCE_KEY, finishData[0]);
+            dataToSave.put(ConstantValues.AVGSPEED_KEY, finishData[2]);
+            dataToSave.put(ConstantValues.HIGHSPEED_KEY, finishData[1]);
         }
 
 
@@ -120,9 +119,27 @@ public class EndActivity extends AppCompatActivity {
             case R.id.information:
                 return true;
             case R.id.log_out:
+                if (mFirebaseAuth.getCurrentUser() != null) {
+                    new AlertDialog.Builder(this).
+                            setTitle("Log out").setMessage("Are you sure you want to log out?").
+                            setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mFirebaseAuth.signOut();
+                                    logOut();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null)
+                            .show();
+
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void logOut() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
