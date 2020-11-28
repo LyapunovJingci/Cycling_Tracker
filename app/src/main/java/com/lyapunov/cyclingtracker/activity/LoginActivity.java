@@ -1,4 +1,4 @@
-package com.lyapunov.cyclingtracker;
+package com.lyapunov.cyclingtracker.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.lyapunov.cyclingtracker.R;
 
 import java.util.Arrays;
 
@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
-                                    .setLogo(R.drawable.ic_directions_bike_white_48dp)
+                                    .setLogo(R.drawable.bikelogo)
                                     .setTheme(R.style.Theme_TestApp)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -74,11 +74,11 @@ public class LoginActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-//                String userName =  FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-//                String welcome = "Welcome " + userName + " !";
-//                Toast.makeText(this, welcome, Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(this, MainActivity.class);
-//                startActivity(intent);
+                String userName =  FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+                String welcome = "Welcome " + userName + " !";
+                Toast.makeText(this, welcome, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the

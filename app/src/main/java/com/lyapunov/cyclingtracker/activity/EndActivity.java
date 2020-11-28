@@ -1,4 +1,4 @@
-package com.lyapunov.cyclingtracker;
+package com.lyapunov.cyclingtracker.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.lyapunov.cyclingtracker.DatabaseConstruct;
+import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
 import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
 

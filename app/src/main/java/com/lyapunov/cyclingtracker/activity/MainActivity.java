@@ -1,7 +1,8 @@
-package com.lyapunov.cyclingtracker;
+package com.lyapunov.cyclingtracker.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.dashboard.locListener;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
 
@@ -86,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         providers = locationManager.getProviders(true);
 
         if (!providers.contains(LocationManager.GPS_PROVIDER)) {
-            Toast.makeText(getApplicationContext(), "No GPS provider", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "No GPS provider", Toast.LENGTH_SHORT).show();
         }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

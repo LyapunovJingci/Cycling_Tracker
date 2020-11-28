@@ -19,20 +19,20 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Cycling Tracker"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestApp">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activity.HistoryActivity"></activity>
+        <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".EndActivity" />
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".activity.EndActivity" />
+        <activity android:name=".activity.MainActivity" />
     </application>
 
 </manifest>

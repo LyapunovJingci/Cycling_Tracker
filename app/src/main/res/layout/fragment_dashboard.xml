@@ -7,9 +7,6 @@
     android:background="#3E3E3E"
     tools:context=".fragment.dashboard.DashboardFragment">
 
-    <!--    For temporary acceleration test usage, feel free to change it later   -->
-
-
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="match_parent"

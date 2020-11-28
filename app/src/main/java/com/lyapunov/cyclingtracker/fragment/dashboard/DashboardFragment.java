@@ -27,8 +27,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.lyapunov.cyclingtracker.DatabaseConstruct;
-import com.lyapunov.cyclingtracker.EndActivity;
-import com.lyapunov.cyclingtracker.MainActivity;
+import com.lyapunov.cyclingtracker.activity.EndActivity;
+import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
 

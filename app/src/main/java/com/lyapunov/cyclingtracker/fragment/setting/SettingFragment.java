@@ -23,7 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lyapunov.cyclingtracker.MainActivity;
+import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
 import com.lyapunov.cyclingtracker.fragment.datagraph.DatagraphFragment;

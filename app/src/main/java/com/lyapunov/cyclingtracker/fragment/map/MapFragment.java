@@ -5,16 +5,14 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.lyapunov.cyclingtracker.DatabaseConstruct;
-import com.lyapunov.cyclingtracker.MainActivity;
+import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
 
@@ -34,7 +32,6 @@ import java.util.TimerTask;
  * A simple {@link Fragment} subclass.
  */
 public class MapFragment extends Fragment {
-
     private static MapView map = null;
     private static Double latitude = null;
     private static Double longitude = null;

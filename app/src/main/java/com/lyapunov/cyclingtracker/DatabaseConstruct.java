@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.SystemClock;
-import android.database.sqlite.SQLiteOpenHelper;
 
+import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
 
 import java.util.ArrayList;
