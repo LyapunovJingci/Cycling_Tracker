@@ -6,13 +6,14 @@ import android.os.Parcelable;
 import com.google.firebase.Timestamp;
 
 public class History implements Parcelable {
-    private int duration;
+    private long duration;
     private double distance;
     private double avg_speed;
     private double high_speed;
     private double rate;
+    private Timestamp time;
 
-    public History(int duration, double distance, double avg_speed, double high_speed, double rate, Timestamp time) {
+    public History(long duration, double distance, double avg_speed, double high_speed, double rate, Timestamp time) {
         this.duration = duration;
         this.distance = distance;
         this.avg_speed = avg_speed;
@@ -49,7 +50,7 @@ public class History implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(duration);
+        parcel.writeLong(duration);
         parcel.writeDouble(distance);
         parcel.writeDouble(avg_speed);
         parcel.writeDouble(high_speed);
@@ -64,9 +65,7 @@ public class History implements Parcelable {
         this.time = time;
     }
 
-    private Timestamp time;
-
-    public int getDuration() {
+    public long getDuration() {
         return duration;
     }
 

@@ -83,23 +83,25 @@ public class HistoryActivity extends AppCompatActivity implements HistoryActivit
     @Override
     public void onHistoryResultClick(int clickedItemIndex) {
         //send to history detail
-        FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(history_id_list.get(clickedItemIndex)).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        String documentId = history_id_list.get(clickedItemIndex);
+        FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    int duration = (int) task.getResult().getData().get(ConstantValues.DURATION_KEY);
+                    Long duration = (Long) task.getResult().getData().get(ConstantValues.DURATION_KEY);
                     Double distance = (Double) task.getResult().getData().get(ConstantValues.DISTANCE_KEY);
                     Double avg_speed = (Double) task.getResult().getData().get(ConstantValues.AVGSPEED_KEY);
                     Double high_speed = (Double) task.getResult().getData().get(ConstantValues.HIGHSPEED_KEY);
                     Timestamp time = (Timestamp) task.getResult().getData().get(ConstantValues.DATE_KEY);
                     Double rate = (Double) task.getResult().getData().get(ConstantValues.RATE_KEY);
                     detailHistory = new History(duration, distance, avg_speed, high_speed, rate, time);
+                    Intent intent = new Intent(HistoryActivity.this, HistoryDetailActivity.class);
+                    intent.putExtra("HISTORYDETAIL", detailHistory);
+                    startActivity(intent);
                 }
             }
         });
-        Intent intent = new Intent(this, HistoryDetailActivity.class);
-        intent.putExtra("HISTORYDETAIL", detailHistory);
-        startActivity(intent);
+
 
     }
 }
