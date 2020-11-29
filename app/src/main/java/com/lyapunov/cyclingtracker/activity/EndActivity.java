@@ -1,7 +1,10 @@
 package com.lyapunov.cyclingtracker.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,14 +14,23 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.utility.ConstantValues;
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
 import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -29,6 +41,7 @@ import nl.dionsegijn.konfetti.models.Size;
 
 public class EndActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
+    private String documentID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,15 +102,32 @@ public class EndActivity extends AppCompatActivity {
 
         HashMap<String, Object> dataToSave = new HashMap<>();
         if (finishData != null) {
-            dataToSave.put(ConstantValues.DATE_KEY, date);
+            dataToSave.put(ConstantValues.DATE_KEY, FieldValue.serverTimestamp());
             dataToSave.put(ConstantValues.DURATION_KEY, (int)finishTime);
             dataToSave.put(ConstantValues.DISTANCE_KEY, finishData[0]);
             dataToSave.put(ConstantValues.AVGSPEED_KEY, finishData[2]);
             dataToSave.put(ConstantValues.HIGHSPEED_KEY, finishData[1]);
         }
+        Snackbar snackbarSuccess = Snackbar.make(findViewById(R.id.coordinator), "Sync successfully with cloud.", Snackbar.LENGTH_LONG);
+        snackbarSuccess.setAction("UNDO", new MyUndoListener());
+
+        FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid())
+                .add(dataToSave).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                documentID = documentReference.getId();
+                snackbarSuccess.show();
+            }
+        });
 
 
+    }
 
+    public class MyUndoListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(documentID).delete();
+        }
     }
 
     @Override
