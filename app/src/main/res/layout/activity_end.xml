@@ -133,6 +133,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_toolbar" />
 
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:layout_marginTop="80dp"
+        app:layout_constraintEnd_toEndOf="@+id/konfettiView"
+        app:layout_constraintStart_toStartOf="@+id/konfettiView"
+        app:layout_constraintTop_toBottomOf="@+id/end_avgspeed"
+        android:progressTint="@color/speed_color4"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

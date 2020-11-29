@@ -15,22 +15,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.utility.ConstantValues;
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
 import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -48,6 +46,13 @@ public class EndActivity extends AppCompatActivity {
         setContentView(R.layout.activity_end);
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
+        RatingBar rateBar = findViewById(R.id.ratingBar);
+        rateBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(documentID).update(ConstantValues.RATE_KEY, v);
+            }
+        });
         setSupportActionBar(toolbar);
         mFirebaseAuth = FirebaseAuth.getInstance();
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);
@@ -107,6 +112,7 @@ public class EndActivity extends AppCompatActivity {
             dataToSave.put(ConstantValues.DISTANCE_KEY, finishData[0]);
             dataToSave.put(ConstantValues.AVGSPEED_KEY, finishData[2]);
             dataToSave.put(ConstantValues.HIGHSPEED_KEY, finishData[1]);
+            dataToSave.put(ConstantValues.RATE_KEY, 0);
         }
         Snackbar snackbarSuccess = Snackbar.make(findViewById(R.id.coordinator), "Sync successfully with cloud.", Snackbar.LENGTH_LONG);
         snackbarSuccess.setAction("UNDO", new MyUndoListener());
