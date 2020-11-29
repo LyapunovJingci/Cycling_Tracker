@@ -1,10 +1,7 @@
 package com.lyapunov.cyclingtracker.activity;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -123,6 +120,7 @@ public class EndActivity extends AppCompatActivity {
             public void onSuccess(DocumentReference documentReference) {
                 documentID = documentReference.getId();
                 snackbarSuccess.show();
+                rateBar.setClickable(true);
             }
         });
 
@@ -147,7 +145,8 @@ public class EndActivity extends AppCompatActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.history:
-
+                Intent intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
                 return true;
             case R.id.setting:
 

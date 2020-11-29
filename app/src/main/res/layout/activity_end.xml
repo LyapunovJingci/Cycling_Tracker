@@ -143,7 +143,8 @@
         app:layout_constraintEnd_toEndOf="@+id/konfettiView"
         app:layout_constraintStart_toStartOf="@+id/konfettiView"
         app:layout_constraintTop_toBottomOf="@+id/end_avgspeed"
-        android:progressTint="@color/speed_color4"/>
+        android:progressTint="@color/speed_color4"
+        android:clickable="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

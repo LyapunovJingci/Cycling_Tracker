@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TestApp">
-        <activity android:name=".activity.HistoryActivity"></activity>
+        <activity android:name=".activity.HistoryDetailActivity"></activity>
+        <activity android:name=".activity.HistoryActivity" />
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
