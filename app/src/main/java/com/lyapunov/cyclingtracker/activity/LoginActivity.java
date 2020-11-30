@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
                                     .setIsSmartLockEnabled(false)
-                                    .setLogo(R.drawable.bikelogo)
+                                    .setLogo(R.drawable.bicycle_logo_preview_rev_1)
                                     .setTheme(R.style.Theme_TestApp)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.GoogleBuilder().build(),

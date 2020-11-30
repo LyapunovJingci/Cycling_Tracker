@@ -16,8 +16,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="-1dp"
         android:layout_marginTop="-1dp"
-        android:rotationX="180"
         android:scaleType="fitXY"
+        android:alpha="128"
         app:srcCompat="@drawable/background" />
 
     <ImageView
@@ -108,14 +108,12 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="145dp"
-        android:layout_height="60dp"
-        android:layout_alignParentStart="true"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="28dp"
-        android:src="@drawable/bikelogo"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/bicycle_logo_preview_rev_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="parent"
@@ -485,20 +483,6 @@
         android:src="@drawable/snail_icon"
         android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/speedChange"
-        android:layout_width="86dp"
-        android:layout_height="36dp"
-        android:layout_alignTop="@+id/imageView2"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="166dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="159dp"
-        android:text="0"
-        android:textAlignment="center"
-        android:textColor="@color/white" />
 
 
 </RelativeLayout>

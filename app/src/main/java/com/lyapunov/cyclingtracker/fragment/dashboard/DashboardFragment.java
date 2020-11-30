@@ -54,7 +54,6 @@ public class DashboardFragment extends Fragment {
     private TextView speedTextView;
     private TextView distanceChange;
     private TextView altitudeChange;
-    private TextView speedChange;
     private Button reset;
     private Button stop;
 
@@ -325,7 +324,6 @@ public class DashboardFragment extends Fragment {
 
         distanceChange = view.findViewById(R.id.distanceChange);
         altitudeChange = view.findViewById(R.id.altitudeChange);
-        speedChange = view.findViewById(R.id.speedChange);
         display_font_size();
         return view;
     }
@@ -419,7 +417,6 @@ public class DashboardFragment extends Fragment {
                     displayClosestAvgSpeed(closestAvgSpeed);
                     showDistanceChangeIndicator(distanceChanged);
                     showAltitudeChangeIndicator(heightChanged);
-                    showSpeedChangeIndicator(calculatedAcceleration);//given how we calculate acceleration (new speed - old), this is the speed difference as well
                     showEncouragement(smoothedSpeed);
                     updateIndicatorStatus(true);
                 }
@@ -868,40 +865,6 @@ public class DashboardFragment extends Fragment {
 
     }
 
-    /**
-     * Update the altitude indicator.
-     * If the altitude increase, the indicator should be green.
-     * If the altitude decrease, the indicator should be red.
-     * The difference changes along with the unit of altitude unit.
-     * @param difference - the difference of altitude within the past second
-     */
-    private void showSpeedChangeIndicator(double difference) {
-        if (isTurbo) {
-            difference *= turboMultiplier;
-        }
-        switch(speedMeasure){
-            case MPH:
-                difference = difference * 2.237;//converts locspeed (m/s) to MPH
-                break;
-            case KMPH:
-                difference = difference * 3.6;//converts locspeed (m/s) to km/hr
-                break;
-            case SMC:
-                difference = difference * (1856.29);//converts locspeed (m/s) to smoots/microcentury
-                break;
-            default:
-                break;
-        }
-        double finalDifference = difference;
-        if (finalDifference > 0) {
-            speedChange.setText("+" + String.format("%.1f", finalDifference));
-            speedChange.setTextColor(Color.GREEN);
-        } else {
-            speedChange.setText(String.format("%.1f", finalDifference));
-            speedChange.setTextColor(Color.RED);
-        }
-
-    }
 
     /**
      * Set the visibility of the qualitative indicators
@@ -912,12 +875,10 @@ public class DashboardFragment extends Fragment {
             //show all indicators
             distanceChange.setVisibility(View.VISIBLE);
             altitudeChange.setVisibility(View.VISIBLE);
-            speedChange.setVisibility(View.VISIBLE);
         } else {
             //hide all indicators
             distanceChange.setVisibility(View.INVISIBLE);
             altitudeChange.setVisibility(View.INVISIBLE);
-            speedChange.setVisibility(View.INVISIBLE);
         }
     }
 
