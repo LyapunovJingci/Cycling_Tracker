@@ -25,9 +25,7 @@ import android.widget.Toast;
 
 import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
-import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
-import com.lyapunov.cyclingtracker.fragment.datagraph.DatagraphFragment;
-import com.lyapunov.cyclingtracker.fragment.info.InfoFragment;
+import com.lyapunov.cyclingtracker.fragment.Mediator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -94,7 +92,7 @@ public class SettingFragment extends Fragment {
                 float size = 15 + (3*speedval_select);
                 exampleFont.setTextSize(TypedValue.COMPLEX_UNIT_SP, size );
                 exampleFont.setText(String.format("Speed Font %.0f sp", size));
-                DashboardFragment.set_font_speed(size);
+                Mediator.getMediator().setFont_size_speed(size);
             }
         });
 
@@ -121,13 +119,7 @@ public class SettingFragment extends Fragment {
                         fontTypeface_select = Typeface.NORMAL;
                     }
                 }
-
-                DashboardFragment.set_font_type(fontTypeface_select);
-                DatagraphFragment.set_font_type(fontTypeface_select);
-                InfoFragment.set_font_type(fontTypeface_select);
-                //exampleFont.setTypeface(tf, fontTypeface_select);
-                //Log.i("int select", String.valueOf(fontTypeface_select));
-
+                Mediator.getMediator().setFont_type(fontTypeface_select);
             }
         });
         italicbox = view.findViewById(R.id.checkBox4);
@@ -151,12 +143,7 @@ public class SettingFragment extends Fragment {
                         fontTypeface_select = Typeface.NORMAL;
                     }
                 }
-
-                DashboardFragment.set_font_type(fontTypeface_select);
-                DatagraphFragment.set_font_type(fontTypeface_select);
-                InfoFragment.set_font_type(fontTypeface_select);
-                //exampleFont.setTypeface(tf, fontTypeface_select);
-                //Log.i("int select", String.valueOf(fontTypeface_select));
+                Mediator.getMediator().setFont_type(fontTypeface_select);
             }
         });
 
@@ -173,25 +160,17 @@ public class SettingFragment extends Fragment {
                 fontSize_select = position;
                 String size = parent.getItemAtPosition(position).toString();
                 switch(size){
-                    case "small":
-                        DashboardFragment.set_font_size(14); //actual font size
-                        InfoFragment.set_font_size(1); //multipliers
-                        DatagraphFragment.set_font_size(1);
-                        break;
                     case "medium":
-                        DashboardFragment.set_font_size(17);
-                        InfoFragment.set_font_size(1.2f);
-                        DatagraphFragment.set_font_size(1.2f);
+                        Mediator.getMediator().setFont_size(17);//actual font size
+                        Mediator.getMediator().setFont_size_multiplier(1.2f);//multipliers
                         break;
                     case "large":
-                        DashboardFragment.set_font_size(21);
-                        InfoFragment.set_font_size(1.5f);
-                        DatagraphFragment.set_font_size(1.5f);
+                        Mediator.getMediator().setFont_size(21);//actual font size
+                        Mediator.getMediator().setFont_size_multiplier(1.5f);//multipliers
                         break;
                     default:
-                        DashboardFragment.set_font_size(14);
-                        InfoFragment.set_font_size(1);
-                        DatagraphFragment.set_font_size(1);
+                        Mediator.getMediator().setFont_size(14);//actual font size
+                        Mediator.getMediator().setFont_size_multiplier(1);//multipliers
                         break;
                 }
             }
@@ -219,25 +198,25 @@ public class SettingFragment extends Fragment {
 
                 switch(speedSelect){
                     case "mph":
-                        DashboardFragment.speedMeasure = DashboardFragment.speedM.MPH;
+                        Mediator.getMediator().setSpeedMeasure(Mediator.speedM.MPH);
                         speedKey = "MPH";
                         speedKeyPosition = 2;
                         //GraphFragment.speedMeasure = GraphFragment.speedM.MPH;
                         break;
                     case "km/h":
-                        DashboardFragment.speedMeasure = DashboardFragment.speedM.KMPH;
+                        Mediator.getMediator().setSpeedMeasure(Mediator.speedM.KMPH);
                         speedKey = "KMPH";
                         speedKeyPosition = 1;
                         //GraphFragment.speedMeasure = GraphFragment.speedM.KMPH;
                         break;
                     case "smoots/microcentury":
-                        DashboardFragment.speedMeasure = DashboardFragment.speedM.SMC;
+                        Mediator.getMediator().setSpeedMeasure(Mediator.speedM.SMC);
                         speedKey = "SMC";
                         speedKeyPosition = 3;
                         //GraphFragment.speedMeasure = GraphFragment.speedM.SMC;
                         break;
                     default:
-                        DashboardFragment.speedMeasure = DashboardFragment.speedM.MS;
+                        Mediator.getMediator().setSpeedMeasure(Mediator.speedM.MS);
                         speedKey = "MS";
                         speedKeyPosition = 0;
                         //GraphFragment.speedMeasure = GraphFragment.speedM.MS;
@@ -266,28 +245,24 @@ public class SettingFragment extends Fragment {
                 String heightSelect = parent.getItemAtPosition(position).toString();
                 switch(heightSelect){
                     case "kms":
-                        DashboardFragment.heightMeasure = DashboardFragment.heightM.KM;
+                        Mediator.getMediator().setHeightMeasure(Mediator.heightM.KM);
                         heightKey = "KM";
                         heightKeyPosition = 1;
-                        //GraphFragment.heightMeasure = GraphFragment.heightM.KM;
                         break;
                     case "miles":
-                        DashboardFragment.heightMeasure = DashboardFragment.heightM.MILES;
+                        Mediator.getMediator().setHeightMeasure(Mediator.heightM.MILES);
                         heightKey = "MILES";
                         heightKeyPosition = 2;
-                        //GraphFragment.heightMeasure = GraphFragment.heightM.MILES;
                         break;
                     case "feet":
-                        DashboardFragment.heightMeasure = DashboardFragment.heightM.FT;
+                        Mediator.getMediator().setHeightMeasure(Mediator.heightM.FT);
                         heightKey = "FT";
                         heightKeyPosition = 3;
-                        //GraphFragment.heightMeasure = GraphFragment.heightM.FT;
                         break;
                     default:
-                        DashboardFragment.heightMeasure = DashboardFragment.heightM.METERS;
+                        Mediator.getMediator().setHeightMeasure(Mediator.heightM.METERS);
                         heightKey = "METERS";
                         heightKeyPosition = 0;
-                        //GraphFragment.heightMeasure = GraphFragment.heightM.METERS;
                         break;
                 }
 
@@ -314,22 +289,22 @@ public class SettingFragment extends Fragment {
                 String timeSelect = parent.getItemAtPosition(position).toString();
                 switch(timeSelect){
                     case "mins":
-                        DashboardFragment.timeMeasure = DashboardFragment.timeM.MIN;
+                        Mediator.getMediator().setTimeMeasure(Mediator.timeM.MIN);
                         timeKey = "MIN";
                         timeKeyPosition = 1;
                         break;
                     case "hours":
-                        DashboardFragment.timeMeasure = DashboardFragment.timeM.HR;
+                        Mediator.getMediator().setTimeMeasure(Mediator.timeM.HR);
                         timeKey = "HR";
                         timeKeyPosition = 2;
                         break;
                     case "days":
-                        DashboardFragment.timeMeasure = DashboardFragment.timeM.DAY;
+                        Mediator.getMediator().setTimeMeasure(Mediator.timeM.DAY);
                         timeKey = "DAY";
                         timeKeyPosition = 3;
                         break;
                     default:
-                        DashboardFragment.timeMeasure = DashboardFragment.timeM.SEC;
+                        Mediator.getMediator().setTimeMeasure(Mediator.timeM.SEC);
                         timeKey = "SEC";
                         timeKeyPosition = 0;
                         break;
@@ -355,22 +330,22 @@ public class SettingFragment extends Fragment {
                 String distanceSelect = parent.getItemAtPosition(position).toString();
                 switch(distanceSelect){
                     case "kms":
-                        DashboardFragment.distMeasure = DashboardFragment.distM.KM;
+                        Mediator.getMediator().setDistMeasure(Mediator.distM.KM);
                         distanceKey = "KM";
                         distanceKeyPosition = 1;
                         break;
                     case "miles":
-                        DashboardFragment.distMeasure = DashboardFragment.distM.MILES;
+                        Mediator.getMediator().setDistMeasure(Mediator.distM.MILES);
                         distanceKey = "MILES";
                         distanceKeyPosition = 2;
                         break;
                     case "feet":
-                        DashboardFragment.distMeasure = DashboardFragment.distM.FT;
+                        Mediator.getMediator().setDistMeasure(Mediator.distM.FT);
                         distanceKey = "FT";
                         distanceKeyPosition = 3;
                         break;
                     default:
-                        DashboardFragment.distMeasure = DashboardFragment.distM.METERS;
+                        Mediator.getMediator().setDistMeasure(Mediator.distM.METERS);
                         distanceKey = "METERS";
                         distanceKeyPosition = 0;
                         break;
@@ -397,22 +372,22 @@ public class SettingFragment extends Fragment {
                 String accelerationSelect = parent.getItemAtPosition(position).toString();
                 switch(accelerationSelect){
                     case "miles/s^2":
-                        DashboardFragment.accelerationMeasure = DashboardFragment.accelerationM.MILESPS2;
+                        Mediator.getMediator().setAccelerationMeasure(Mediator.accelerationM.MILESPS2);
                         accelKey = "MILESPS2";
                         accelKeyPosition = 1;
                         break;
                     case "feet/s^2":
-                        DashboardFragment.accelerationMeasure = DashboardFragment.accelerationM.FTPS2;
+                        Mediator.getMediator().setAccelerationMeasure(Mediator.accelerationM.FTPS2);
                         accelKey = "FTPS2";
                         accelKeyPosition = 2;
                         break;
                     case "gal":
-                        DashboardFragment.accelerationMeasure = DashboardFragment.accelerationM.GAL;
+                        Mediator.getMediator().setAccelerationMeasure(Mediator.accelerationM.GAL);
                         accelKey = "GAL";
                         accelKeyPosition = 3;
                         break;
                     default:
-                        DashboardFragment.accelerationMeasure = DashboardFragment.accelerationM.MPS2;
+                        Mediator.getMediator().setAccelerationMeasure(Mediator.accelerationM.MPS2);
                         accelKey = "MPS2";
                         accelKeyPosition = 0;
                         break;
@@ -455,9 +430,7 @@ public class SettingFragment extends Fragment {
                 Toast.makeText(getContext(), "Settings Saved!", Toast.LENGTH_SHORT).show();
             }
         });
-
-        DatagraphFragment.setting_visited();
-        InfoFragment.setting_visited();
+        Mediator.getMediator().setSettings_init(true);
         return view;
 
     }

@@ -1,6 +1,5 @@
 package com.lyapunov.cyclingtracker.fragment.datagraph;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -22,9 +21,8 @@ import com.github.mikephil.charting.formatter.IFillFormatter;
 import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.lyapunov.cyclingtracker.DatabaseConstruct;
-import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
-import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
+import com.lyapunov.cyclingtracker.fragment.Mediator;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -37,12 +35,9 @@ public class DatagraphFragment extends Fragment {
     private DatabaseConstruct db;
     private LineChart lineChart;
     private ArrayList<Entry> values;
-    private static float font_size = 1.0f;
-    private static int font_type = 0;
     private static Timer timer = new Timer();
     SharedPreferences sharedPref;
     private static boolean init = true;
-    private static boolean settings_init = false;
     public View view;
 
 
@@ -53,8 +48,7 @@ public class DatagraphFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_graph, container, false);
 
         // Only loads saved preferences when app first opens
-        if(init && !settings_init) {
-            getDefaultPreferences();
+        if(init && !Mediator.getMediator().isSettings_init()) {
             init =false;
         }
 
@@ -104,7 +98,7 @@ public class DatagraphFragment extends Fragment {
         int index = 0;
         do {
             double speed = result.getDouble(result.getColumnIndex("SPEED"));
-            double calculatedSpeed = convertSpeedUnit(DashboardFragment.speedMeasure, speed);
+            double calculatedSpeed = convertSpeedUnit(Mediator.getMediator().getSpeedMeasure(), speed);
             values.add(new Entry(index, (float)calculatedSpeed)); //keep adding each speed to the list
             index++;
         } while (result.moveToPrevious());
@@ -121,8 +115,6 @@ public class DatagraphFragment extends Fragment {
      * Formats the chart colors, legengs, axes, etc.
      */
     private void formatChart(){
-
-
         lineChart.getXAxis().setAxisLineColor(Color.WHITE);
         lineChart.getXAxis().setTextColor(Color.WHITE);
 
@@ -134,8 +126,6 @@ public class DatagraphFragment extends Fragment {
         //  lineChart.animateXY(2200,2200, Easing.EaseInSine);
         lineChart.getDescription().setEnabled(false);
         lineChart.getLegend().setEnabled(false);
-
-
     }
 
     /**
@@ -152,8 +142,6 @@ public class DatagraphFragment extends Fragment {
         lineDataSet.setFillColor(Color.rgb(0, 164, 152));
         lineDataSet.setFillAlpha(200);
         lineDataSet.setDrawValues(false);
-
-
         lineDataSet.setDrawFilled(true);
         lineDataSet.setFillFormatter(new IFillFormatter() {
             @Override
@@ -191,7 +179,7 @@ public class DatagraphFragment extends Fragment {
         TextView speedDisplay = (TextView) view.findViewById(R.id.bestspeed_text);
         TextView yAxis = (TextView) view.findViewById(R.id.yAxis);
 
-        switch(DashboardFragment.speedMeasure){
+        switch(Mediator.getMediator().getSpeedMeasure()){
             case MPH:
                 locSpeed = locSpeed * 2.237;//converts locspeed (m/s) to MPH
                 speedDisplay.setText((String.format("%.1f", locSpeed)) + " MPH");
@@ -221,7 +209,7 @@ public class DatagraphFragment extends Fragment {
      */
     private void displayHeight(double locHeight){
         TextView heightDisplay = (TextView) view.findViewById(R.id.bestalt_text);
-        switch(DashboardFragment.heightMeasure){
+        switch(Mediator.getMediator().getHeightMeasure()){
             case KM:
                 //converts locHeight to KM
                 locHeight = locHeight/1000;
@@ -246,12 +234,6 @@ public class DatagraphFragment extends Fragment {
 
     }
 
-
-    public static void set_font_size(float input_size) {
-        font_size = input_size;
-    }
-    public static void set_font_type(int input_size) {font_type = input_size;}
-    public static void setting_visited(){settings_init = true;}
     public void display_font_size(){
 
         //Find all textview in the page
@@ -268,33 +250,15 @@ public class DatagraphFragment extends Fragment {
 
     private void setTextSize (TextView view) {
         //return the actual size of the text
-        float newSize = view.getTextSize() / getResources().getDisplayMetrics().scaledDensity * font_size;
+        float newSize = view.getTextSize() / getResources().getDisplayMetrics().scaledDensity * Mediator.getMediator().getFont_size_multiplier();
         //change the text size
         view.setTextSize(newSize);
         //change its font type
-        view.setTypeface(view.getTypeface(), font_type);
-    }
-
-    private void getDefaultPreferences(){
-        sharedPref = getContext().getSharedPreferences(String.valueOf(MainActivity.username), Context.MODE_PRIVATE);
-        font_type = sharedPref.getInt("fontType", 0);
-
-        int tmp_font_select = sharedPref.getInt("fontSize", 1);
-        switch(tmp_font_select){
-            case 1:
-                set_font_size(1.2f);
-                break;
-            case 2:
-                set_font_size(1.5f);
-                break;
-            default:
-                set_font_size(1.0f);
-                break;
-        }
+        view.setTypeface(view.getTypeface(), Mediator.getMediator().getFont_type());
     }
 
 
-    private double convertSpeedUnit(DashboardFragment.speedM unit, double speed) {
+    private double convertSpeedUnit(Mediator.speedM unit, double speed) {
         switch (unit) {
             case MPH:
                 return speed*  2.237;//converts speed (m/s) to MPH

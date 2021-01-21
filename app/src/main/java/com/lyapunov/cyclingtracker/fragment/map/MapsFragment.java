@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.activity.MainActivity;
-import com.lyapunov.cyclingtracker.fragment.dashboard.DashboardFragment;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -102,43 +98,38 @@ public class MapsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (DashboardFragment.Pause.isPause()) {
-                            //showStatus();
-                        } else {
-                            if (map != null) {
-                                latitude = MainActivity.locationListener.getLat();
-                                longitude = MainActivity.locationListener.getLong();
-                                double speed = MainActivity.locationListener.getSpeed();
-                                int c = 0;
-                                if (speed <= 8) {
-                                    c = 0xff40ff00;
-                                } else if (speed > 8 && speed <= 16) {
-                                    c = 0xff80ff00;
-                                } else if (speed > 16 && speed <= 24) {
-                                    c = 0xffbfff00;
-                                } else if (speed > 24 && speed <= 32) {
-                                    c = 0xffffff00;
-                                } else if (speed > 32 && speed <= 40) {
-                                    c = 0xffffbf00;
-                                } else if (speed > 40 && speed <= 48) {
-                                    c = 0xffff8000;
-                                } else if (speed > 48 && speed <= 56) {
-                                    c = 0xffff4000;
-                                } else {
-                                    c = 0xffff0000;
-                                }
-
-                                Polyline polyline = map.addPolyline(new PolylineOptions().add(
-                                        new LatLng(latitude, longitude),
-                                        new LatLng(prelatitude, prelongitude)
-                                ).color(c));
-                                LatLng local = new LatLng(latitude, longitude);
-                                map.moveCamera(CameraUpdateFactory.newLatLng(local));
-
-                                prelatitude = latitude;
-                                prelongitude = longitude;
-
+                        if (map != null) {
+                            latitude = MainActivity.locationListener.getLat();
+                            longitude = MainActivity.locationListener.getLong();
+                            double speed = MainActivity.locationListener.getSpeed();
+                            int c = 0;
+                            if (speed <= 8) {
+                                c = 0xff40ff00;
+                            } else if (speed > 8 && speed <= 16) {
+                                c = 0xff80ff00;
+                            } else if (speed > 16 && speed <= 24) {
+                                c = 0xffbfff00;
+                            } else if (speed > 24 && speed <= 32) {
+                                c = 0xffffff00;
+                            } else if (speed > 32 && speed <= 40) {
+                                c = 0xffffbf00;
+                            } else if (speed > 40 && speed <= 48) {
+                                c = 0xffff8000;
+                            } else if (speed > 48 && speed <= 56) {
+                                c = 0xffff4000;
+                            } else {
+                                c = 0xffff0000;
                             }
+
+                            Polyline polyline = map.addPolyline(new PolylineOptions().add(
+                                    new LatLng(latitude, longitude),
+                                    new LatLng(prelatitude, prelongitude)
+                            ).color(c));
+                            LatLng local = new LatLng(latitude, longitude);
+                            map.moveCamera(CameraUpdateFactory.newLatLng(local));
+
+                            prelatitude = latitude;
+                            prelongitude = longitude;
 
                         }
                     }

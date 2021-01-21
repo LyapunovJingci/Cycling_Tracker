@@ -16,17 +16,14 @@ import android.widget.TextView;
 
 import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
+import com.lyapunov.cyclingtracker.fragment.Mediator;
 
 /**
  * A simple {@link Fragment} subclass.
  * create an instance of this fragment.
  */
 public class InfoFragment extends Fragment {
-
-    private static float font_size = 1.0f;
-    private static int font_type = 0;
     private static boolean init = true;
-    private static boolean settings_init = false;
     SharedPreferences sharedPref;
     public View view;
     @Override
@@ -36,7 +33,7 @@ public class InfoFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_info, container, false);
 
         // Only loads saved preferences when app first opens
-        if(init && !settings_init) {
+        if(init && !Mediator.getMediator().isSettings_init()) {
             getDefaultPreferences();
             init =false;
         }
@@ -57,30 +54,26 @@ public class InfoFragment extends Fragment {
             TableRow testrow = (TableRow) testtable.getChildAt(i);
             TextView testview = (TextView) testrow.getChildAt(0);
             //get actual size
-            float newsize = testview.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
+            float newsize = testview.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * Mediator.getMediator().getFont_size_multiplier();
             testview.setTextSize(TypedValue.COMPLEX_UNIT_SP, newsize);
-            testview.setTypeface(testview.getTypeface(), font_type);
+            testview.setTypeface(testview.getTypeface(), Mediator.getMediator().getFont_type());
         }
     }
-    public static void set_font_size(float input_size) {
-        font_size = input_size;
-    }
-    public static void set_font_type(int input_size) {font_type = input_size;  }
-    public static void setting_visited(){settings_init = true;}
+
     private void getDefaultPreferences(){
         sharedPref = getContext().getSharedPreferences(String.valueOf(MainActivity.username), Context.MODE_PRIVATE);
-        font_type = sharedPref.getInt("fontType", 0);
+        Mediator.getMediator().setFont_type(sharedPref.getInt("fontType", 0));
 
         int tmp_font_select = sharedPref.getInt("fontSize", 1);
         switch(tmp_font_select){
             case 1:
-                set_font_size(1.2f);
+                Mediator.getMediator().setFont_size_multiplier(1.2f);
                 break;
             case 2:
-                set_font_size(1.5f);
+                Mediator.getMediator().setFont_size_multiplier(1.5f);
                 break;
             default:
-                set_font_size(1);
+                Mediator.getMediator().setFont_size_multiplier(1);
                 break;
         }
     }

@@ -17,12 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -30,6 +27,7 @@ import com.lyapunov.cyclingtracker.DatabaseConstruct;
 import com.lyapunov.cyclingtracker.activity.EndActivity;
 import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
+import com.lyapunov.cyclingtracker.fragment.Mediator;
 import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
 
 import java.util.ArrayList;
@@ -43,10 +41,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * A simple {@link Fragment} subclass.
  */
 public class DashboardFragment extends Fragment {
-
-    private static float speed_size = 21;
-    private static float font_size = 14f;
-    private static int font_type = 0;
 
     private ToggleButton togglePauseButton;//switch to pause and start
     private TextView speedTextView;
@@ -66,35 +60,16 @@ public class DashboardFragment extends Fragment {
     private static double current_long = 0;
     private static double current_lat = 0;
 
-    //New vars added for measurements -- NOTE FRAGS MAY REDUCE NEED FOR STATIC
-    public enum speedM {MPH, KMPH, MS, SMC};
-    public static volatile speedM speedMeasure = speedM.MS;
-
-    public enum distM {METERS, KM, MILES, FT};
-    public static volatile distM distMeasure = distM.METERS;
-
-    public enum heightM {METERS, KM, MILES, FT};
-    public static volatile heightM heightMeasure = heightM.METERS;
-
     public static highScore thisHighScore;
     public static lowScore thisLowScore;
-    public enum timeM {SEC, MIN, HR, DAY};
-    public static volatile timeM timeMeasure = timeM.SEC;
 
     //Moving time tracker
     private static AtomicInteger movingTime = new AtomicInteger();
     private static AtomicInteger stoppedTime = new AtomicInteger();
 
-    public enum accelerationM {MPS2, MILESPS2, FTPS2, GAL};
-    public static volatile accelerationM accelerationMeasure = accelerationM.MPS2;
-
     public View view;
-
     private DatabaseConstruct db;
-
     public static Pause pause;
-    private static boolean isPaused = true;
-
     private static Timer thread = new Timer();
 
     SharedPreferences sharedPref;
@@ -106,8 +81,6 @@ public class DashboardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         //create database
         db = new DatabaseConstruct(getActivity());
         db.clearDB();
@@ -132,7 +105,6 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
-
         // Only loads saved preferences when app first opens
         if(init) {
             getDefaultPreferences();
@@ -143,12 +115,11 @@ public class DashboardFragment extends Fragment {
         togglePauseButton = (ToggleButton) view.findViewById(R.id.pauseButton);
         Pause.togglePause(true);
 
-
         togglePauseButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 Pause.togglePause(!isChecked);
-                isPaused = !isChecked;
+                Mediator.getMediator().setPaused(!isChecked);
                 if(Pause.isPause()){
                     togglePauseButton.setBackgroundResource(R.drawable.go_btn);
                     togglePauseButton.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pauseanimation));
@@ -170,7 +141,7 @@ public class DashboardFragment extends Fragment {
                 smoothedDistance = 0.0;
                 movingTime.set(0);//reset moving time
                 stoppedTime.set(0);//reset stopped time
-                if (isPaused) {//fixing bug: indicators flash if hitting reset button at pausing status
+                if (Mediator.getMediator().isPaused()) {//fixing bug: indicators flash if hitting reset button at pausing status
                     showPausingStatus();
                 } else {
                     showStatus();
@@ -207,7 +178,7 @@ public class DashboardFragment extends Fragment {
                             finishData[2] = cursor2.getDouble(0);
                         }
                         cursor2.close();
-                        switch(distMeasure){
+                        switch(Mediator.getMediator().getDistMeasure()){
                             case KM:
                                 finishUnit[0] = "KM";
                                 finishData[0] /= 1000;
@@ -224,7 +195,7 @@ public class DashboardFragment extends Fragment {
                                 finishUnit[0] = "M";
                                 break;
                         }
-                        switch(speedMeasure){
+                        switch(Mediator.getMediator().getSpeedMeasure()){
                             case MPH:
                                 finishUnit[1] = "M/H";
                                 finishUnit[2] = "M/H";
@@ -253,7 +224,7 @@ public class DashboardFragment extends Fragment {
                         smoothedDistance = 0.0;
                         movingTime.set(0);//reset moving time
                         stoppedTime.set(0);//reset stopped time
-                        if (isPaused) {//fixing bug: indicators flash if hitting reset button at pausing status
+                        if (Mediator.getMediator().isPaused()) {//fixing bug: indicators flash if hitting reset button at pausing status
                             showPausingStatus();
                         } else {
                             showStatus();
@@ -284,7 +255,7 @@ public class DashboardFragment extends Fragment {
     public void onStart() {
         super.onStart();
         getUpdates();
-        togglePauseButton.setChecked(!isPaused);//reset toggle button
+        togglePauseButton.setChecked(!Mediator.getMediator().isPaused());//reset toggle button
     }
 
     @Override
@@ -473,9 +444,8 @@ public class DashboardFragment extends Fragment {
     public void displaySpeed(double locSpeed){
         TextView speedDisplay = (TextView) view.findViewById(R.id.textView3);
         setColor(locSpeed);
-        setSpeed(speedDisplay, speedMeasure, locSpeed);
+        setSpeed(speedDisplay, Mediator.getMediator().getSpeedMeasure(), locSpeed);
         set_speed_size();
-
     }
 
 
@@ -485,7 +455,7 @@ public class DashboardFragment extends Fragment {
      */
     public void displayClosestAvgSpeed(double locSpeed){
         TextView avgspeedDisplay = (TextView) view.findViewById(R.id.avgSpeed);
-        setSpeed(avgspeedDisplay, speedMeasure, locSpeed);
+        setSpeed(avgspeedDisplay, Mediator.getMediator().getSpeedMeasure(), locSpeed);
         setFont(avgspeedDisplay);
     }
 
@@ -495,7 +465,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayHeight(double locHeight){
         TextView heightDisplay = (TextView) view.findViewById(R.id.alt_text);
-        setLength(heightDisplay, heightMeasure, locHeight);
+        setLength(heightDisplay, Mediator.getMediator().getHeightMeasure(), locHeight);
         setFont(heightDisplay);
     }
 
@@ -505,7 +475,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayDist(double dist){
         TextView distDisplay = (TextView) view.findViewById(R.id.dist_text);
-        setLength(distDisplay, distMeasure, dist);
+        setLength(distDisplay, Mediator.getMediator().getDistMeasure(), dist);
         setFont(distDisplay);
     }
 
@@ -516,7 +486,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayTime(float time){
         TextView timeview = view.findViewById(R.id.time_text);
-        setTime(timeview, timeMeasure, time);
+        setTime(timeview, Mediator.getMediator().getTimeMeasure(), time);
         setFont(timeview);
     }
 
@@ -526,7 +496,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayStoppedTime(float time){
         TextView stoptimeview = view.findViewById(R.id.StoppedTime_text2);
-        setTime(stoptimeview, timeMeasure, time);
+        setTime(stoptimeview, Mediator.getMediator().getTimeMeasure(), time);
         setFont(stoptimeview);
     }
 
@@ -536,7 +506,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayMovingTime(float time){
         TextView movetimeview = view.findViewById(R.id.moving_time_text);
-        setTime(movetimeview, timeMeasure, time);
+        setTime(movetimeview, Mediator.getMediator().getTimeMeasure(), time);
         setFont(movetimeview);
     }
 
@@ -546,7 +516,7 @@ public class DashboardFragment extends Fragment {
      */
     private void displayAcceleration (double locAcceleration) {
         TextView accelerationDisplay = (TextView) view.findViewById(R.id.acce_text);
-        switch(accelerationMeasure){
+        switch(Mediator.getMediator().getAccelerationMeasure()){
             case MILESPS2:
                 locAcceleration = locAcceleration / 1609.34;//converts m/s^2 to mile/s^2
                 accelerationDisplay.setText((String.format("%.1f", locAcceleration)) + " mile/s^2");
@@ -599,7 +569,7 @@ public class DashboardFragment extends Fragment {
      */
     private void showDistanceChangeIndicator(double difference) {
 //        else {//NOTE -- Removed the else, as we still need unit conversions
-        switch(distMeasure){
+        switch(Mediator.getMediator().getDistMeasure()){
             case KM:
                 //converts locHeight to KM
                 difference = difference/1000;
@@ -631,7 +601,7 @@ public class DashboardFragment extends Fragment {
      */
     private void showAltitudeChangeIndicator(double difference) {
 //        else {//NOTE -- Removed the else, as we still need unit conversions
-        switch(heightMeasure){
+        switch(Mediator.getMediator().getHeightMeasure()){
             case KM:
                 //converts locHeight to KM
                 difference = difference/1000;
@@ -676,18 +646,8 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-
-    public static void set_font_speed(float input_size) {
-        speed_size = input_size;
-    }
     public void set_speed_size(){
-        speedTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, speed_size );
-    }
-    public static void set_font_size(float input_size) {
-        font_size = input_size;
-    }
-    public static void set_font_type(int input_size) {
-        font_type = input_size;
+        speedTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, Mediator.getMediator().getFont_size_speed());
     }
 
     public void display_font_size(){
@@ -698,28 +658,25 @@ public class DashboardFragment extends Fragment {
         TextView altText = (TextView) view.findViewById(R.id.altitude);
         TextView timeText = (TextView) view.findViewById(R.id.time);
         TextView moving_timeText = (TextView) view.findViewById(R.id.moving_time);
-        TextView StoppedTimeText = (TextView) view.findViewById(R.id.StoppedTime);
+        TextView stoppedTimeText = (TextView) view.findViewById(R.id.StoppedTime);
         TextView avgSpeedTextText = (TextView) view.findViewById(R.id.avgSpeedText);
 
-        //change the text size
-        distText.setTextSize(font_size*0.9F);
-        accelText.setTextSize(font_size*0.9F);
-        altText.setTextSize(font_size*0.9F);
-        timeText.setTextSize(font_size*0.7F);
-        moving_timeText.setTextSize(font_size*0.7F);
-        StoppedTimeText.setTextSize(font_size*0.7F);
-        avgSpeedTextText.setTextSize(font_size*0.7F);
+        float offset_size_s = 0.7F;
+        float offset_size_m = 0.9F;
 
+        setFontAndType(distText, Mediator.getMediator().getFont_size(), offset_size_m, Mediator.getMediator().getFont_type());
+        setFontAndType(accelText, Mediator.getMediator().getFont_size(), offset_size_m, Mediator.getMediator().getFont_type());
+        setFontAndType(altText, Mediator.getMediator().getFont_size(), offset_size_m, Mediator.getMediator().getFont_type());
+        setFontAndType(timeText, Mediator.getMediator().getFont_size(), offset_size_s, Mediator.getMediator().getFont_type());
+        setFontAndType(moving_timeText, Mediator.getMediator().getFont_size(), offset_size_s, Mediator.getMediator().getFont_type());
+        setFontAndType(stoppedTimeText, Mediator.getMediator().getFont_size(), offset_size_s, Mediator.getMediator().getFont_type());
+        setFontAndType(avgSpeedTextText, Mediator.getMediator().getFont_size(), offset_size_s, Mediator.getMediator().getFont_type());
 
-        //change its font type
-        distText.setTypeface(distText.getTypeface(), font_type);
-        accelText.setTypeface(accelText.getTypeface(), font_type);
-        altText.setTypeface(altText.getTypeface(), font_type);
-        timeText.setTypeface(timeText.getTypeface(), font_type);
-        moving_timeText.setTypeface(moving_timeText.getTypeface(), font_type);
-        StoppedTimeText.setTypeface(StoppedTimeText.getTypeface(), font_type);
-        avgSpeedTextText.setTypeface(avgSpeedTextText.getTypeface(), font_type);
+    }
 
+    private void setFontAndType(TextView v, float fontSize, float offset, int fontType) {
+        v.setTextSize(fontSize * offset);
+        v.setTypeface(v.getTypeface(), fontType);
     }
 
     private void setColor(double speed) {
@@ -761,50 +718,40 @@ public class DashboardFragment extends Fragment {
     }
 
     private void getDefaultPreferences(){
-
         sharedPref = getContext().getSharedPreferences(String.valueOf(MainActivity.username), Context.MODE_PRIVATE);
 
         String speedSelect = sharedPref.getString("speedKey", "MS");
-        speedMeasure = speedM.valueOf(speedSelect);
+        Mediator.getMediator().setSpeedMeasure(Mediator.speedM.valueOf(speedSelect));
 
         String distanceSelect = sharedPref.getString("distanceKey", "METERS");
-        distMeasure = distM.valueOf((distanceSelect));
+        Mediator.getMediator().setDistMeasure(Mediator.distM.valueOf((distanceSelect)));
 
         String accelerationSelect = sharedPref.getString("accelKey", "MILESPS2");
-        accelerationMeasure = accelerationM.valueOf((accelerationSelect));
-
+        Mediator.getMediator().setAccelerationMeasure(Mediator.accelerationM.valueOf(accelerationSelect));
 
         String timeSelect = sharedPref.getString("timeKey", "SEC");
-        timeMeasure = timeM.valueOf((timeSelect));
-
+        Mediator.getMediator().setTimeMeasure(Mediator.timeM.valueOf(timeSelect));
 
         String heightSelect = sharedPref.getString("heightKey", "METERS");
-        heightMeasure = heightM.valueOf(heightSelect);
+        Mediator.getMediator().setHeightMeasure(Mediator.heightM.valueOf(heightSelect));
 
 
-        font_type = sharedPref.getInt("fontType", 0);
+        Mediator.getMediator().setFont_type(sharedPref.getInt("fontType", 0));
 
-        int tmp_font_select = sharedPref.getInt("fontSize", 1);
-
-        switch(tmp_font_select){
+        switch(sharedPref.getInt("fontSize", 1)){
             case 1:
-                set_font_size(17);
+                Mediator.getMediator().setFont_size(17);
                 break;
             case 2:
-                set_font_size(21);
+                Mediator.getMediator().setFont_size(21);
                 break;
             default:
-                set_font_size(14);
+                Mediator.getMediator().setFont_size(14);
                 break;
         }
 
-
-        int tmp_speed_select = sharedPref.getInt("speedSize", 0);
-        float size = 15 + (3*tmp_speed_select);
-        set_font_speed(size);
-
-
-
+        float size = 15 + (3 * sharedPref.getInt("speedSize", 0));
+        Mediator.getMediator().setFont_size_speed(size);
     }
 
     /**
@@ -815,7 +762,7 @@ public class DashboardFragment extends Fragment {
         return smoothedSpeed;
     }
 
-    private void setSpeed (TextView view, DashboardFragment.speedM unit, double speed) {
+    private void setSpeed (TextView view, Mediator.speedM unit, double speed) {
         switch (unit) {
             case MPH:
                 view.setText((String.format("%.1f", speed *  2.237)) + " MPH");
@@ -833,7 +780,7 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    private void setLength (TextView view, DashboardFragment.heightM unit, double length) {
+    private void setLength (TextView view, Mediator.heightM unit, double length) {
         switch (unit) {
             case KM:
                 view.setText((String.format("%.1f", length/1000)) + " km");
@@ -853,7 +800,7 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private void setLength (TextView view, DashboardFragment.distM unit, double length) {
+    private void setLength (TextView view, Mediator.distM unit, double length) {
         switch (unit) {
             case KM:
                 view.setText((String.format("%.1f", length/1000)) + " km");
@@ -874,7 +821,7 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    private void setTime (TextView view, DashboardFragment.timeM unit, double time) {
+    private void setTime (TextView view, Mediator.timeM unit, double time) {
         switch (unit) {
             case MIN:
                 //converts time to min
@@ -896,8 +843,8 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setFont (TextView view) {
-        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size);
-        view.setTypeface(view.getTypeface(), font_type);
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, Mediator.getMediator().getFont_size());
+        view.setTypeface(view.getTypeface(), Mediator.getMediator().getFont_type());
     }
 
     public static class Pause{
