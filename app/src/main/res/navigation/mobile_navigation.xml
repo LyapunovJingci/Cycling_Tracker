@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_map"
-        android:name="com.lyapunov.cyclingtracker.fragment.map.MapFragment"
+        android:name="com.lyapunov.cyclingtracker.fragment.map.MapsFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map" />
 
