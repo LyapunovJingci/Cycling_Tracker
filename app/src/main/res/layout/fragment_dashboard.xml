@@ -381,30 +381,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/distance" />
 
-    <ToggleButton
-        android:id="@+id/turbo_Btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="101dp"
-        android:background="@drawable/turbo_btn"
-        android:text="ToggleButton"
-        android:textOff=" "
-        android:textOn=" " />
 
-
-    <ImageView
-        android:id="@+id/fire"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="93dp"
-        android:src="@drawable/fire"
-        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/distanceChange"
@@ -428,20 +405,7 @@
         app:layout_constraintHorizontal_bias="0.106"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Spinner
-        android:id="@+id/turboSpinner"
-        android:layout_width="69dp"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="308dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginBottom="58dp"
-        android:background="#959595"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <TextView
         android:id="@+id/avgSpeedText"

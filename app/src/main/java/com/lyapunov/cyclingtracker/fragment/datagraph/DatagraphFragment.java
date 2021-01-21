@@ -47,8 +47,7 @@ public class DatagraphFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_graph, container, false);
@@ -65,7 +64,6 @@ public class DatagraphFragment extends Fragment {
         values = new ArrayList<>();
         setData();
         setHighScores(view);
-        setLowScores(view);
         display_font_size();
         return view;
     }
@@ -103,51 +101,13 @@ public class DatagraphFragment extends Fragment {
         }
         result.moveToLast(); // move to the first row of the cursor before reading it
 
-        System.out.println("setting data");
-
-        switch(DashboardFragment.speedMeasure){
-            case MPH:
-                int i = 0;
-                do{
-                    double speed = result.getDouble(result.getColumnIndex("SPEED"));
-                    speed = speed*  2.237;//converts speed (m/s) to MPH
-                    values.add(new Entry(i, (float)speed)); //keep adding each speed to the list
-                    i++;
-
-                } while(result.moveToPrevious()); // run through all the rows in the cursor object
-                break;
-            case KMPH:
-                int ii = 0;
-                do{
-                    double speed = result.getDouble(result.getColumnIndex("SPEED"));
-                    speed = speed*  3.6;//converts speed (m/s) to MPH
-                    values.add(new Entry(ii, (float)speed)); //keep adding each speed to the list
-                    ii++;
-
-                } while(result.moveToPrevious()); // run through all the rows in the cursor object
-                break;
-            case SMC:
-                int iii = 0;
-                do{
-                    double speed = result.getDouble(result.getColumnIndex("SPEED"));
-                    speed = speed*  (1856.29);//converts speed (m/s) to MPH
-                    values.add(new Entry(iii, (float)speed)); //keep adding each speed to the list
-                    iii++;
-
-                } while(result.moveToPrevious()); // run through all the rows in the cursor object
-                break;
-            default:
-                int iiii = 0;
-                do{
-                    double speed = result.getDouble(result.getColumnIndex("SPEED"));
-                    values.add(new Entry(iiii, (float)speed)); //keep adding each speed to the list
-                    iiii++;
-
-                } while(result.moveToPrevious()); // run through all the rows in the cursor object
-                break;
-        }
-
-
+        int index = 0;
+        do {
+            double speed = result.getDouble(result.getColumnIndex("SPEED"));
+            double calculatedSpeed = convertSpeedUnit(DashboardFragment.speedMeasure, speed);
+            values.add(new Entry(index, (float)calculatedSpeed)); //keep adding each speed to the list
+            index++;
+        } while (result.moveToPrevious());
 
         LineDataSet lineDataSet = new LineDataSet(values, "Time");
         formatLineData(lineDataSet);
@@ -156,7 +116,6 @@ public class DatagraphFragment extends Fragment {
 
         lineChart.setData(lineData);
         lineChart.invalidate();
-
     }
     /**
      * Formats the chart colors, legengs, axes, etc.
@@ -190,8 +149,8 @@ public class DatagraphFragment extends Fragment {
         lineDataSet.setDrawCircles(false);
         lineDataSet.setColor(Color.WHITE);
         lineDataSet.setCircleHoleColor(Color.WHITE);
-        lineDataSet.setFillColor(Color.rgb(178, 171, 255));
-        lineDataSet.setFillAlpha(225);
+        lineDataSet.setFillColor(Color.rgb(0, 164, 152));
+        lineDataSet.setFillAlpha(200);
         lineDataSet.setDrawValues(false);
 
 
@@ -209,39 +168,20 @@ public class DatagraphFragment extends Fragment {
      * @param view -- current view to get the Textview from
      */
     public void setHighScores(View view){
-
-
         Cursor cursor = db.get_Highest();
         if (cursor.getCount() == 0){
             db.insert_Highest(0,0,0);
             displaySpeed(0);
             displayHeight(0);
-        }else {
+        } else {
             cursor.moveToLast();
             double bestSpeed = cursor.getDouble(cursor.getColumnIndex("SPEED"));
             double bestHeight = cursor.getDouble(cursor.getColumnIndex("ALTITUDE"));
             displaySpeed(bestSpeed);
             displayHeight(bestHeight);
         }
-
     }
-    public void setLowScores(View view){
 
-
-        Cursor cursor = db.get_Lowest();
-        if (cursor.getCount() == 0){
-            db.insert_Lowest((double)Integer.MAX_VALUE,0,(double)Integer.MAX_VALUE);
-            displayLowSpeed((double)Integer.MAX_VALUE);
-            displayLowHeight((double)Integer.MAX_VALUE);
-        }else {
-            cursor.moveToLast();
-            double lowestSpeed = cursor.getDouble(cursor.getColumnIndex("SPEED"));
-            double lowestHeight = cursor.getDouble(cursor.getColumnIndex("ALTITUDE"));
-            displayLowSpeed(lowestSpeed);
-            displayLowHeight(lowestHeight);
-        }
-
-    }
 
     /**
      * Displays best speed to user
@@ -255,21 +195,21 @@ public class DatagraphFragment extends Fragment {
             case MPH:
                 locSpeed = locSpeed * 2.237;//converts locspeed (m/s) to MPH
                 speedDisplay.setText((String.format("%.1f", locSpeed)) + " MPH");
-                yAxis.setText("Speed MPH");
+                yAxis.setText("MPH");
                 break;
             case KMPH:
                 locSpeed = locSpeed * 3.6;//converts locspeed (m/s) to km/hr
                 speedDisplay.setText((String.format("%.1f", locSpeed)) + " KM/H");
-                yAxis.setText("Speed KM/H");
+                yAxis.setText("KM/H");
                 break;
             case SMC:
                 locSpeed = locSpeed * (1856.29);//converts locspeed (m/s) to smoots/microcentury
                 speedDisplay.setText((String.format("%.0f", locSpeed)) + " smoots/microcentury");
-                yAxis.setText("Speed Smoots/microcentury");
+                yAxis.setText("Smoots/microcentury");
                 break;
             default:
                 speedDisplay.setText((String.format("%.1f", locSpeed)) + " m/s");
-                yAxis.setText("Speed m/s");
+                yAxis.setText("m/s");
                 break;
         }
 
@@ -305,71 +245,8 @@ public class DatagraphFragment extends Fragment {
 
 
     }
-    public void displayLowSpeed(double locSpeed){
-        TextView speedDisplay = (TextView) view.findViewById(R.id.lowspeed_text);
-        TextView yAxis = (TextView) view.findViewById(R.id.yAxis);
-        if(locSpeed == (double)Integer.MAX_VALUE){
-            speedDisplay.setText("No speed exist");
-            return;
-        }
-        switch(DashboardFragment.speedMeasure){
-            case MPH:
-                locSpeed = locSpeed * 2.237;//converts locspeed (m/s) to MPH
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " MPH");
-                yAxis.setText("Speed MPH");
-                break;
-            case KMPH:
-                locSpeed = locSpeed * 3.6;//converts locspeed (m/s) to km/hr
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " KM/H");
-                yAxis.setText("Speed KM/H");
-                break;
-            case SMC:
-                locSpeed = locSpeed * (1856.29);//converts locspeed (m/s) to smoots/microcentury
-                speedDisplay.setText((String.format("%.0f", locSpeed)) + " smoots/microcentury");
-                yAxis.setText("Speed Smoots/microcentury");
-                break;
-            default:
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " m/s");
-                yAxis.setText("Speed m/s");
-                break;
-        }
-
-    }
-
-    /**
-     * Displays best height to user
-     * @param locHeight -- altitude received from database
-     */
-    private void displayLowHeight(double locHeight){
-        TextView heightDisplay = (TextView) view.findViewById(R.id.lowalt_text);
-        if(locHeight == (double)Integer.MAX_VALUE){
-            heightDisplay.setText("No height exist");
-            return;
-        }
-        switch(DashboardFragment.heightMeasure){
-            case KM:
-                //converts locHeight to KM
-                locHeight = locHeight/1000;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " km");
-                break;
-            case MILES:
-                //converts locHeight to miles
-                locHeight = locHeight/1609;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " miles");
-                break;
-            case FT:
-                //converts locHeight to feet
-                locHeight = locHeight*3.281;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " ft");
-                break;
-            default:
-                //Displays default locHeight as meters
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " meters");
-                break;
-        }
 
 
-    }
     public static void set_font_size(float input_size) {
         font_size = input_size;
     }
@@ -382,42 +259,22 @@ public class DatagraphFragment extends Fragment {
         TextView heightDisplay = (TextView) view.findViewById(R.id.bestalt_text);
         TextView bestaltitude = (TextView) view.findViewById(R.id.bestaltitude);
         TextView bestspeed = (TextView) view.findViewById(R.id.bestspeed);
-        TextView lowspeedDisplay = (TextView) view.findViewById(R.id.lowspeed_text);
-        TextView lowheightDisplay = (TextView) view.findViewById(R.id.lowalt_text);
-        TextView lowbestaltitude = (TextView) view.findViewById(R.id.bestaltitude3);
-        TextView lowbestspeed = (TextView) view.findViewById(R.id.bestspeed2);
 
-        //return the actual size of the text
-        float newsize = speedDisplay.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize1 = heightDisplay.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize2 = bestaltitude.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize3 = bestspeed.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize4 = lowspeedDisplay.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize5 = lowheightDisplay.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize6 = lowbestaltitude.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-        float newsize7 = lowbestspeed.getTextSize()/ getResources().getDisplayMetrics().scaledDensity * font_size;
-
-        //change the text size
-        speedDisplay.setTextSize(newsize);
-        heightDisplay.setTextSize(newsize1);
-        bestaltitude.setTextSize(newsize2);
-        bestspeed.setTextSize(newsize3);
-        lowspeedDisplay.setTextSize(newsize4);
-        lowheightDisplay.setTextSize(newsize5);
-        lowbestaltitude.setTextSize(newsize6);
-        lowbestspeed.setTextSize(newsize7);
-
-        //change its font type
-        speedDisplay.setTypeface(speedDisplay.getTypeface(), font_type);
-        heightDisplay.setTypeface(heightDisplay.getTypeface(), font_type);
-        bestaltitude.setTypeface(bestaltitude.getTypeface(), font_type);
-        bestspeed.setTypeface(bestspeed.getTypeface(), font_type);
-        lowspeedDisplay.setTypeface(speedDisplay.getTypeface(), font_type);
-        lowheightDisplay.setTypeface(heightDisplay.getTypeface(), font_type);
-        lowbestaltitude.setTypeface(bestaltitude.getTypeface(), font_type);
-        lowbestspeed.setTypeface(bestspeed.getTypeface(), font_type);
-
+        setTextSize(speedDisplay);
+        setTextSize(heightDisplay);
+        setTextSize(bestaltitude);
+        setTextSize(bestspeed);
     }
+
+    private void setTextSize (TextView view) {
+        //return the actual size of the text
+        float newSize = view.getTextSize() / getResources().getDisplayMetrics().scaledDensity * font_size;
+        //change the text size
+        view.setTextSize(newSize);
+        //change its font type
+        view.setTypeface(view.getTypeface(), font_type);
+    }
+
     private void getDefaultPreferences(){
         sharedPref = getContext().getSharedPreferences(String.valueOf(MainActivity.username), Context.MODE_PRIVATE);
         font_type = sharedPref.getInt("fontType", 0);
@@ -434,5 +291,18 @@ public class DatagraphFragment extends Fragment {
                 set_font_size(1.0f);
                 break;
         }
+    }
+
+
+    private double convertSpeedUnit(DashboardFragment.speedM unit, double speed) {
+        switch (unit) {
+            case MPH:
+                return speed*  2.237;//converts speed (m/s) to MPH
+            case KMPH:
+                return speed *  3.6;//converts speed (m/s) to MPH
+            case SMC:
+                return speed *  (1856.29);//converts speed (m/s) to MPH
+        }
+        return speed;
     }
 }

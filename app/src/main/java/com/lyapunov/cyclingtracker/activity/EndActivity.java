@@ -44,12 +44,7 @@ public class EndActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         RatingBar rateBar = findViewById(R.id.ratingBar);
-        rateBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(documentID).update(ConstantValues.RATE_KEY, v);
-            }
-        });
+        rateBar.setOnRatingBarChangeListener((ratingBar, v, b) -> FirebaseFirestore.getInstance().collection(mFirebaseAuth.getUid()).document(documentID).update(ConstantValues.RATE_KEY, v));
         setSupportActionBar(toolbar);
         mFirebaseAuth = FirebaseAuth.getInstance();
         final KonfettiView konfettiView = findViewById(R.id.konfettiView);

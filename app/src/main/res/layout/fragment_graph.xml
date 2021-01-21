@@ -73,7 +73,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="122dp"
         android:layout_marginTop="9dp"
-        android:text="Session Speed"
+        android:text="Speed History"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
@@ -91,7 +91,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/xAxis"
         android:orientation="vertical"
-        android:paddingTop="8dp"
+        android:paddingTop="20dp"
         android:paddingEnd="8dp"
         android:paddingRight="8dp"
         android:paddingBottom="8dp"
@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="High Scores:"
+                android:text="High Score"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
@@ -117,10 +117,10 @@
 
             <TextView
                 android:id="@+id/bestspeed"
-                android:layout_width="223dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="Best Speed:"
+                android:text="Speed"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
@@ -128,7 +128,7 @@
 
             <TextView
                 android:id="@+id/bestspeed_text"
-                android:layout_width="225dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
                 android:text="0.0"
@@ -138,10 +138,10 @@
 
             <TextView
                 android:id="@+id/bestaltitude"
-                android:layout_width="226dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="8dp"
-                android:text="Best Altitude:"
+                android:text="Altitude"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
@@ -149,51 +149,9 @@
 
             <TextView
                 android:id="@+id/bestalt_text"
-                android:layout_width="227dp"
-                android:paddingBottom="8dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="0.0"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/bestspeed2"
-                android:layout_width="228dp"
                 android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:text="Lowest Speed:"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/lowspeed_text"
-                android:layout_width="228dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:text="0.0"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/bestaltitude3"
-                android:layout_width="228dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
-                android:text="Lowest Altitude:"
-                android:textAlignment="center"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/lowalt_text"
-                android:layout_width="228dp"
-                android:paddingBottom="8dp"
-                android:layout_height="wrap_content"
                 android:text="0.0"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"

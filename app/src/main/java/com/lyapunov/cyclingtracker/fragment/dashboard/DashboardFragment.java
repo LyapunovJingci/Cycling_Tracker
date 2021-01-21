@@ -44,8 +44,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DashboardFragment extends Fragment {
 
-
-
     private static float speed_size = 21;
     private static float font_size = 14f;
     private static int font_type = 0;
@@ -96,11 +94,6 @@ public class DashboardFragment extends Fragment {
 
     public static Pause pause;
     private static boolean isPaused = true;
-    private ToggleButton turboToggleBtn;
-    private static boolean isTurbo = false;
-    private static int turboMultiplier;
-    private Spinner turboSpinner;
-    private static int turboMultiplier_select;
 
     private static Timer thread = new Timer();
 
@@ -125,8 +118,7 @@ public class DashboardFragment extends Fragment {
             thisLowScore.init();
             db.insert_Highest(thisHighScore.getBestSpeed(),0,thisHighScore.getBestAltitude());
             db.insert_Lowest(thisLowScore.getBestSpeed(),0,thisLowScore.getBestAltitude());
-        }
-        else{
+        } else{
             cursor.moveToLast();
             cursor1.moveToLast();
             thisHighScore.init();
@@ -148,8 +140,6 @@ public class DashboardFragment extends Fragment {
         }
 
         speedTextView = (TextView) view.findViewById(R.id.textView3);
-
-
         togglePauseButton = (ToggleButton) view.findViewById(R.id.pauseButton);
         Pause.togglePause(true);
 
@@ -171,46 +161,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        turboToggleBtn = (ToggleButton) view.findViewById(R.id.turbo_Btn);
-        turboToggleBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isTurbo = !isChecked;
-                setTurboBtn();
-            }
-        });
-
-        turboSpinner = view.findViewById(R.id.turboSpinner);
-        ArrayAdapter<CharSequence> turboAdapter = ArrayAdapter.createFromResource(this.getActivity(),
-                R.array.turbomultiplier_array, android.R.layout.simple_spinner_item);
-        turboAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        turboSpinner.setAdapter(turboAdapter);
-        turboSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                turboMultiplier_select = position;
-                String speedSelect = parent.getItemAtPosition(position).toString();
-                switch(speedSelect){
-                    case "x5":
-                        turboMultiplier = 5;
-                        break;
-                    case "x10":
-                        turboMultiplier = 10;
-                        break;
-                    case "x50":
-                        turboMultiplier = 50;
-                        break;
-                    default:
-                        turboMultiplier = 2;
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
         reset = (Button) view.findViewById(R.id.reset);
         reset.setOnClickListener(new Button.OnClickListener() {
@@ -335,15 +285,11 @@ public class DashboardFragment extends Fragment {
         super.onStart();
         getUpdates();
         togglePauseButton.setChecked(!isPaused);//reset toggle button
-        turboToggleBtn.setChecked((!isTurbo));
-        setTurboBtn();
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        turboSpinner.setSelection(turboMultiplier_select);
         showPausingStatus();
     }
 
@@ -527,29 +473,11 @@ public class DashboardFragment extends Fragment {
     public void displaySpeed(double locSpeed){
         TextView speedDisplay = (TextView) view.findViewById(R.id.textView3);
         setColor(locSpeed);
-        if(isTurbo){
-            locSpeed = locSpeed * turboMultiplier;
-        }
-        switch(speedMeasure){
-            case MPH:
-                locSpeed = locSpeed * 2.237;//converts locspeed (m/s) to MPH
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " MPH");
-                break;
-            case KMPH:
-                locSpeed = locSpeed * 3.6;//converts locspeed (m/s) to km/hr
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " KM/H");
-                break;
-            case SMC:
-                locSpeed = locSpeed * (1856.29);//converts locspeed (m/s) to smoots/microcentury
-                speedDisplay.setText((String.format("%.0f", locSpeed)) + " smoots/microcentury");
-                break;
-            default:
-                speedDisplay.setText((String.format("%.1f", locSpeed)) + " m/s");
-                break;
-        }
+        setSpeed(speedDisplay, speedMeasure, locSpeed);
         set_speed_size();
 
     }
+
 
     /**
      * Displays current speed to user
@@ -557,28 +485,8 @@ public class DashboardFragment extends Fragment {
      */
     public void displayClosestAvgSpeed(double locSpeed){
         TextView avgspeedDisplay = (TextView) view.findViewById(R.id.avgSpeed);
-        if(isTurbo){
-            locSpeed = locSpeed * turboMultiplier;
-        }
-        switch(speedMeasure){
-            case MPH:
-                locSpeed = locSpeed * 2.237;//converts locspeed (m/s) to MPH
-                avgspeedDisplay.setText((String.format("%.1f", locSpeed)) + " MPH");
-                break;
-            case KMPH:
-                locSpeed = locSpeed * 3.6;//converts locspeed (m/s) to km/hr
-                avgspeedDisplay.setText((String.format("%.1f", locSpeed)) + " KM/H");
-                break;
-            case SMC:
-                locSpeed = locSpeed * (1856.29);//converts locspeed (m/s) to smoots/microcentury
-                avgspeedDisplay.setText((String.format("%.0f", locSpeed)) + " smoots/microcentury");
-                break;
-            default:
-                avgspeedDisplay.setText((String.format("%.1f", locSpeed)) + " m/s");
-                break;
-        }
-        avgspeedDisplay.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        avgspeedDisplay.setTypeface(avgspeedDisplay.getTypeface(), font_type);
+        setSpeed(avgspeedDisplay, speedMeasure, locSpeed);
+        setFont(avgspeedDisplay);
     }
 
     /**
@@ -587,33 +495,8 @@ public class DashboardFragment extends Fragment {
      */
     private void displayHeight(double locHeight){
         TextView heightDisplay = (TextView) view.findViewById(R.id.alt_text);
-        if(isTurbo){
-            locHeight = locHeight * turboMultiplier;
-        }
-        switch(heightMeasure){
-            case KM:
-                //converts locHeight to KM
-                locHeight = locHeight/1000;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " km");
-                break;
-            case MILES:
-                //converts locHeight to miles
-                locHeight = locHeight/1609;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " miles");
-                break;
-            case FT:
-                //converts locHeight to feet
-                locHeight = locHeight*3.281;
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " ft");
-                break;
-            default:
-                //Displays default locHeight as meters
-                heightDisplay.setText((String.format("%.1f", locHeight)) + " meters");
-                break;
-        }
-        heightDisplay.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        heightDisplay.setTypeface(heightDisplay.getTypeface(), font_type);
-
+        setLength(heightDisplay, heightMeasure, locHeight);
+        setFont(heightDisplay);
     }
 
     /**
@@ -622,31 +505,9 @@ public class DashboardFragment extends Fragment {
      */
     private void displayDist(double dist){
         TextView distDisplay = (TextView) view.findViewById(R.id.dist_text);
-        if(isTurbo){
-            dist = dist * turboMultiplier;
-        }
-        switch(distMeasure){
-            case KM:
-                //converts dist travelled to KM
-                distDisplay.setText((String.format("%.1f", (dist/1000))) + " km");
-                break;
-            case MILES:
-                //converts dist travelled to miles
-                distDisplay.setText((String.format("%.1f", (dist/1609))) + " miles");
-                break;
-            case FT:
-                //converts dist travelled to feet
-                distDisplay.setText((String.format("%.1f", (dist*3.281))) + " ft");
-                break;
-            default:
-                //Displays default dist travelled as meters
-                distDisplay.setText(String.format("%.1f", dist)+ " meters");
-                break;
-        }
-        distDisplay.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        distDisplay.setTypeface(distDisplay.getTypeface(), font_type);
+        setLength(distDisplay, distMeasure, dist);
+        setFont(distDisplay);
     }
-
 
     /**
      * Displays time
@@ -655,29 +516,9 @@ public class DashboardFragment extends Fragment {
      */
     private void displayTime(float time){
         TextView timeview = view.findViewById(R.id.time_text);
-        switch(timeMeasure){
-            case MIN:
-                //converts time to min
-                timeview.setText(String.format("%.1f", (time/60)) + " min");
-                break;
-            case HR:
-                //converts time to hrs
-                timeview.setText(String.format("%.2f", (time/3600)) + " hrs");
-                break;
-            case DAY:
-                //converts time to days
-                timeview.setText(String.format("%.3f", (time/86400)) + " days");
-                break;
-            default:
-                //Displays times as seconds
-                timeview.setText(String.format("%.0f", (time)) + " s");
-                break;
-        }
-        timeview.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        timeview.setTypeface(timeview.getTypeface(), font_type);
+        setTime(timeview, timeMeasure, time);
+        setFont(timeview);
     }
-
-
 
     /**
      * Displays the stopped time (when the device is paused or the location of the device is NOT changing)
@@ -685,27 +526,8 @@ public class DashboardFragment extends Fragment {
      */
     private void displayStoppedTime(float time){
         TextView stoptimeview = view.findViewById(R.id.StoppedTime_text2);
-        switch(timeMeasure){
-            case MIN:
-                //converts time to min
-                stoptimeview.setText(String.format("%.1f", (time/60)) + " min");
-                break;
-            case HR:
-                //converts time to hrs
-                stoptimeview.setText(String.format("%.2f", (time/3600)) + " hrs");
-                break;
-            case DAY:
-                //converts time to days
-                stoptimeview.setText(String.format("%.3f", (time/86400)) + " days");
-                break;
-            default:
-                //Displays times as seconds
-                stoptimeview.setText(String.format("%.0f", (time)) + " s");
-                break;
-        }
-        stoptimeview.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        stoptimeview.setTypeface(stoptimeview.getTypeface(), font_type);
-
+        setTime(stoptimeview, timeMeasure, time);
+        setFont(stoptimeview);
     }
 
     /**
@@ -714,26 +536,8 @@ public class DashboardFragment extends Fragment {
      */
     private void displayMovingTime(float time){
         TextView movetimeview = view.findViewById(R.id.moving_time_text);
-        switch(timeMeasure){
-            case MIN:
-                //converts time to min
-                movetimeview.setText(String.format("%.1f", (time/60)) + " min");
-                break;
-            case HR:
-                //converts time to hrs
-                movetimeview.setText(String.format("%.2f", (time/3600)) + " hrs");
-                break;
-            case DAY:
-                //converts time to days
-                movetimeview.setText(String.format("%.3f", (time/86400)) + " days");
-                break;
-            default:
-                //Displays times as seconds
-                movetimeview.setText(String.format("%.0f", (time)) + " s");
-                break;
-        }
-        movetimeview.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        movetimeview.setTypeface(movetimeview.getTypeface(), font_type);
+        setTime(movetimeview, timeMeasure, time);
+        setFont(movetimeview);
     }
 
     /**
@@ -742,9 +546,6 @@ public class DashboardFragment extends Fragment {
      */
     private void displayAcceleration (double locAcceleration) {
         TextView accelerationDisplay = (TextView) view.findViewById(R.id.acce_text);
-        if(isTurbo){
-            locAcceleration = locAcceleration * turboMultiplier;
-        }
         switch(accelerationMeasure){
             case MILESPS2:
                 locAcceleration = locAcceleration / 1609.34;//converts m/s^2 to mile/s^2
@@ -762,8 +563,7 @@ public class DashboardFragment extends Fragment {
                 accelerationDisplay.setText((String.format("%.1f", locAcceleration)) + " m/s^2");
                 break;
         }
-        accelerationDisplay.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size );
-        accelerationDisplay.setTypeface(accelerationDisplay.getTypeface(), font_type);
+        setFont(accelerationDisplay);
     }
 
     /**
@@ -798,9 +598,6 @@ public class DashboardFragment extends Fragment {
      * @param difference - the difference of altitude within the past second
      */
     private void showDistanceChangeIndicator(double difference) {
-        if (isTurbo) {
-            difference *= turboMultiplier;
-        }
 //        else {//NOTE -- Removed the else, as we still need unit conversions
         switch(distMeasure){
             case KM:
@@ -833,9 +630,6 @@ public class DashboardFragment extends Fragment {
      * @param difference - the difference of altitude within the past second
      */
     private void showAltitudeChangeIndicator(double difference) {
-        if (isTurbo) {
-            difference *= turboMultiplier;
-        }
 //        else {//NOTE -- Removed the else, as we still need unit conversions
         switch(heightMeasure){
             case KM:
@@ -966,22 +760,6 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private void setTurboBtn(){
-        ImageView fire = view.findViewById(R.id.fire);
-        if (isTurbo) {
-            turboToggleBtn.setBackgroundResource(R.drawable.turbo_pressed);
-            fire.setVisibility(view.VISIBLE);
-            turboToggleBtn.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fireanimation));
-            fire.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fireanimation2));
-        } else {
-            turboToggleBtn.setBackgroundResource(R.drawable.turbo_btn);
-            turboToggleBtn.clearAnimation();
-            fire.clearAnimation();
-            fire.setVisibility(view.INVISIBLE);
-        }
-
-    }
-
     private void getDefaultPreferences(){
 
         sharedPref = getContext().getSharedPreferences(String.valueOf(MainActivity.username), Context.MODE_PRIVATE);
@@ -1037,6 +815,90 @@ public class DashboardFragment extends Fragment {
         return smoothedSpeed;
     }
 
+    private void setSpeed (TextView view, DashboardFragment.speedM unit, double speed) {
+        switch (unit) {
+            case MPH:
+                view.setText((String.format("%.1f", speed *  2.237)) + " MPH");
+                break;
+            case KMPH:
+                view.setText((String.format("%.1f", speed *  3.6)) + " KM/H");
+                break;
+            case SMC:
+                view.setText((String.format("%.0f", speed *  1856.29)) + " smoots/microcentury");
+                break;
+            default:
+                view.setText((String.format("%.1f", speed)) + " m/s");
+                break;
+        }
+    }
+
+
+    private void setLength (TextView view, DashboardFragment.heightM unit, double length) {
+        switch (unit) {
+            case KM:
+                view.setText((String.format("%.1f", length/1000)) + " km");
+                break;
+            case MILES:
+                //converts locHeight to miles
+                view.setText((String.format("%.1f", length/1609)) + " miles");
+                break;
+            case FT:
+                //converts locHeight to feet
+                view.setText((String.format("%.1f", length*3.281)) + " ft");
+                break;
+            default:
+                //Displays default locHeight as meters
+                view.setText((String.format("%.1f", length)) + " meters");
+                break;
+        }
+    }
+
+    private void setLength (TextView view, DashboardFragment.distM unit, double length) {
+        switch (unit) {
+            case KM:
+                view.setText((String.format("%.1f", length/1000)) + " km");
+                break;
+            case MILES:
+                //converts locHeight to miles
+                view.setText((String.format("%.1f", length/1609)) + " miles");
+                break;
+            case FT:
+                //converts locHeight to feet
+                view.setText((String.format("%.1f", length*3.281)) + " ft");
+                break;
+            default:
+                //Displays default locHeight as meters
+                view.setText((String.format("%.1f", length)) + " meters");
+                break;
+        }
+    }
+
+
+    private void setTime (TextView view, DashboardFragment.timeM unit, double time) {
+        switch (unit) {
+            case MIN:
+                //converts time to min
+                view.setText(String.format("%.1f", (time/60)) + " min");
+                break;
+            case HR:
+                //converts time to hrs
+                view.setText(String.format("%.2f", (time/3600)) + " hrs");
+                break;
+            case DAY:
+                //converts time to days
+                view.setText(String.format("%.3f", (time/86400)) + " days");
+                break;
+            default:
+                //Displays times as seconds
+                view.setText(String.format("%.0f", (time)) + " s");
+                break;
+        }
+    }
+
+    private void setFont (TextView view) {
+        view.setTextSize(TypedValue.COMPLEX_UNIT_SP, font_size);
+        view.setTypeface(view.getTypeface(), font_type);
+    }
 
     public static class Pause{
 

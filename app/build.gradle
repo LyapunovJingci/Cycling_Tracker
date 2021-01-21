@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
-
+    implementation "io.reactivex.rxjava3:rxjava:3.0.9"
     implementation "com.airbnb.android:lottie:3.5.0"
 
     implementation "androidx.fragment:fragment:1.2.5"
