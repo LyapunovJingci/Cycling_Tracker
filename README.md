@@ -1,9 +1,8 @@
 # Cycling Tracker
 
-## 🧐 About
-Cycling tracker is an Android app that helps users track exercising data and history.
+Cycling Tracker is an Android app that helps a user to track exercising data and history. It shows and record instant data while cycling, and motivates the user when necessary. It stores exercising details, including but not limit to duration, track, highest speed, on Firebase backend, allowing a user to access his or her cycling history to discover patterns of personal exercing habits.  
 
-### Features ###
+## 🧐Features 
 
 * Show a dashboard of exercisng data, such as traveled distance, instant speed, altitude, etc..
 * Provide a map updating current location and track in real time.
@@ -21,7 +20,7 @@ The basic code structure of this demo was an one-month group project in the clas
 * [Geocoding API](https://developers.google.com/maps/documentation/geocoding/overview)
 * [Firebase](https://firebase.google.com/)
 
-## 📝Libraries Usage
+## 📝Library Usage
 
 * [OkHttp](https://github.com/square/okhttp)
 * [Picasso](https://github.com/square/picasso) 
