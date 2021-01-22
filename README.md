@@ -1,6 +1,18 @@
 # Cycling Tracker
 
-Cycling tracker is an Android app helper people track data during cycling. The backbone of this demo is an one-month group project in the class "Principle of Software in Scale", the link to our group project is [here](https://github.com/LyapunovJingci/Cycling_Tracker_EC500).
+## 🧐 About
+Cycling tracker is an Android app that helps users track exercising data and history.
+
+### Features ###
+
+* Show a dashboard of exercisng data, such as traveled distance, instant speed, altitude, etc..
+* Provide a map updating current location and track in real time.
+* Provide a plot of cycling speed vs instant time. 
+* Allow users to modify units, font size, font type for better user experience.
+* Show an encourage image, if user's current speed is lower than his or her average history speed.
+* Show a comprehensive detail of past exercing history.
+
+The basic code structure of this demo was an one-month group project in the class "Principle of Software in Scale" at BU with four classmates, the link to our class project is [here](https://github.com/LyapunovJingci/Cycling_Tracker_EC500).
 
 ## 📝API & Platform Usage
 
