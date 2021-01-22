@@ -29,3 +29,9 @@ The basic code structure of this demo was an one-month group project in the clas
 * [Lottie](https://github.com/airbnb/lottie-android)
 * [Konfetti](https://github.com/DanielMartinus/Konfetti)
 
+## 🎈Screenshots
+
+<img src="screenshots/dashboard.png" width="45%">&#160;<img src="screenshots/dashboard_slow.png" width="45%">
+<img src="screenshots/track.png" width="45%">&#160;<img src="screenshots/graph.png" width="45%">
+<img src="screenshots/finish.png" width="45%">&#160;<img src="screenshots/history.png" width="45%">
+<img src="screenshots/setting.png" width="45%">&#160;<img src="screenshots/login.png" width="45%">
