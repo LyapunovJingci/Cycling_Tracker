@@ -6,6 +6,7 @@ Cycling tracker is an Android app helper people track data during cycling. The b
 
 * Google Maps SDK for Android
 * Google Maps Static API
+* Geocoding API
 * Firebase
 
 ## 📝Libraries Usage
