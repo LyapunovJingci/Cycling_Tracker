@@ -8,4 +8,5 @@ public class ConstantValues {
     public static final String HIGHSPEED_KEY = "high_speed";
     public static final String RATE_KEY = "rate";
     public static final String CITY_KEY = "city";
+    public static final String PATH_KEY = "path";
 }

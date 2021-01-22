@@ -1,7 +1,9 @@
 package com.lyapunov.cyclingtracker.networking;
 
 public class Keys {
-
+    /*
+    Please add the API keys here
+     */
     private static final String GEOCODER_KEY = "";
     private static final String MAPSTATIC_KEY = "";
 

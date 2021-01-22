@@ -2,25 +2,32 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="160dp"
+    android:padding="5dp">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:background="@color/black"
-        android:id="@+id/history_pic"
-        android:padding="10dp"
-        android:layout_margin="10dp">
-    </ImageView>
+    <TextView
+        android:id="@+id/histo"
+        android:background="@color/purple_500"
+        android:alpha="0.1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </TextView>
     <TextView
         android:id="@+id/history_item"
+        android:textColor="@color/purple_700"
         android:paddingTop="80sp"
-        android:paddingLeft="180sp"
+        android:paddingLeft="240dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_margin="@dimen/fab_margin">
+        android:textSize="18sp">
     </TextView>
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="150dp"
+        android:id="@+id/history_pic"
+        android:padding="10dp">
+    </ImageView>
 
 
 

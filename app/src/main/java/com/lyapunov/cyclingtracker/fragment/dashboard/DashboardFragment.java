@@ -29,10 +29,12 @@ import com.lyapunov.cyclingtracker.activity.EndActivity;
 import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.Mediator;
+import com.lyapunov.cyclingtracker.fragment.Recorder;
 import com.lyapunov.cyclingtracker.networking.AddressCaller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
@@ -173,11 +175,6 @@ public class DashboardFragment extends Fragment {
                 db.clearDB();
             }
         });
-        //TODO:
-        //1. get track image
-        //2. send time, distance, max speed, average speed, track image to End Activity
-        //3. Add firebase
-        //4. Add history activity
         stop = (Button) view.findViewById(R.id.stop);
         stop.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -305,6 +302,12 @@ public class DashboardFragment extends Fragment {
                     db.insertData(smoothedSpeed, smoothedDistance, smoothedHeight, current_long, current_lat);
                 }else{
                     updateDisplay();
+                }
+                if (Calendar.getInstance().get(13) % 10 == 0) {
+                    if (current_lat != 0 && current_long != 0) {
+                        String latlng = String.format("%.6f",current_lat) + "," + String.format("%.6f",current_long);
+                        Recorder.getRecorder().updateRecord(latlng);
+                    }
                 }
             }
 
@@ -435,6 +438,7 @@ public class DashboardFragment extends Fragment {
 
         current_long = MainActivity.locationListener.getLong();
         current_lat = MainActivity.locationListener.getLat();
+
         db.insertData(smoothedSpeed, smoothedDistance, smoothedHeight, current_long, current_lat);
 
         ArrayList<Double> closestSpeeds = db.getThreeClosest(current_lat, current_long);//find 3 closest points in table

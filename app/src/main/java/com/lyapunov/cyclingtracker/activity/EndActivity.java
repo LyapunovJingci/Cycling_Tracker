@@ -22,6 +22,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.lyapunov.cyclingtracker.R;
+import com.lyapunov.cyclingtracker.fragment.Recorder;
 import com.lyapunov.cyclingtracker.utility.ConstantValues;
 import com.lyapunov.cyclingtracker.utility.StringBuildHelper;
 import com.lyapunov.cyclingtracker.utility.TimeConvertHelper;
@@ -98,6 +99,7 @@ public class EndActivity extends AppCompatActivity {
         String avgSpeed = stringHelper.buildString("Average Speed: ", String.format("%.2f", finishData[2]), " ", finishUnit[2]);
         end_avgspeed.setText(avgSpeed);
 
+        String path = Recorder.getRecorder().getFinalRecord();
         HashMap<String, Object> dataToSave = new HashMap<>();
         if (finishData != null) {
             dataToSave.put(ConstantValues.DATE_KEY, FieldValue.serverTimestamp());
@@ -107,6 +109,7 @@ public class EndActivity extends AppCompatActivity {
             dataToSave.put(ConstantValues.HIGHSPEED_KEY, finishData[1]);
             dataToSave.put(ConstantValues.RATE_KEY, 0);
             dataToSave.put(ConstantValues.CITY_KEY, city);
+            dataToSave.put(ConstantValues.PATH_KEY, path);
         }
         Snackbar snackbarSuccess = Snackbar.make(findViewById(R.id.coordinator), "Sync successfully with cloud.", Snackbar.LENGTH_LONG);
         snackbarSuccess.setAction("UNDO", new MyUndoListener());

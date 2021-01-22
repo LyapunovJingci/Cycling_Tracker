@@ -35,7 +35,7 @@ public class HistoryActivity extends AppCompatActivity implements HistoryActivit
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private ArrayList<String> history_list = new ArrayList<>();
+    private ArrayList<HistoryThumbnail> history_list = new ArrayList<>();
     private ArrayList<String> history_id_list = new ArrayList<>();
 
     private History detailHistory;
@@ -52,11 +52,13 @@ public class HistoryActivity extends AppCompatActivity implements HistoryActivit
                         history_id_list.add(document.getId());
                         Timestamp timestamp = (Timestamp) document.getData().get(ConstantValues.DATE_KEY);
                         Date date = timestamp.toDate();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy, HH:mm");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm\nMM/dd/yyyy");
                         String strDate = dateFormat.format(date);
+                        String path = (String) document.getData().get(ConstantValues.PATH_KEY);
                         String city = (String) document.getData().get(ConstantValues.CITY_KEY);
                         String item = strDate + "\n" + city;
-                        history_list.add(item);
+                        HistoryThumbnail historyThunbnail = new HistoryThumbnail(item, path);
+                        history_list.add(historyThunbnail);
                     }
                     mAdapter = new HistoryActivityAdapter(history_list.size(), history_list, HistoryActivity.this::onHistoryResultClick);
                     mRecyclerView.setAdapter(mAdapter);
@@ -104,4 +106,15 @@ public class HistoryActivity extends AppCompatActivity implements HistoryActivit
 
 
     }
+}
+
+class HistoryThumbnail {
+    String datencity;
+    String path;
+
+    public HistoryThumbnail(String datencity, String path) {
+        this.datencity = datencity;
+        this.path = path;
+    }
+
 }
