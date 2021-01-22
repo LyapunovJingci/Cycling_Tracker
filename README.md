@@ -13,7 +13,7 @@ Cycling Tracker is an Android app that helps a user to track exercising data and
 * Allow the user to rate a cycling track.
 * Show a comprehensive detail of past exercising history.
 
-The basic code structure of this demo was an one-month group project in the class "Principle of Software in Scale" at BU with four classmates, the link to our class project is [here](https://github.com/LyapunovJingci/Cycling_Tracker_EC500). Code refactoring was performed and several new features were added based on personal interest.
+The basic code structure of this demo was an one-month group project in the class "Principle of Software in Scale" at BU with four classmates, the link to our class project is [here](https://github.com/LyapunovJingci/Cycling_Tracker_EC500). Code refactoring was performed and several new features were added based on personal interest after the semester ends.
 
 ## 📝API & Platform Usage
 
