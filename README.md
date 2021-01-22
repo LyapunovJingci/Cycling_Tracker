@@ -11,8 +11,9 @@ Cycling tracker is an Android app helper people track data during cycling. The b
 
 ## 📝Libraries Usage
 
+* [OkHttp](https://github.com/square/okhttp)
 * [Picasso](https://github.com/square/picasso) 
-* [Retrofit](https://square.github.io/retrofit/)
+* [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
 * [Lottie](https://github.com/airbnb/lottie-android)
 * [Konfetti](https://github.com/DanielMartinus/Konfetti)
-* [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
+
