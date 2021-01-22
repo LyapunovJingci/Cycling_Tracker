@@ -4,10 +4,10 @@ Cycling tracker is an Android app helper people track data during cycling. The b
 
 ## 📝API & Platform Usage
 
-* Google Maps SDK for Android
-* Google Maps Static API
-* Geocoding API
-* Firebase
+* [Google Maps SDK for Android](https://developers.google.com/maps/documentation/android-sdk/intro)
+* [Google Maps Static API](https://developers.google.com/maps/documentation/maps-static/overview)
+* [Geocoding API](https://developers.google.com/maps/documentation/geocoding/overview)
+* [Firebase](https://firebase.google.com/)
 
 ## 📝Libraries Usage
 
