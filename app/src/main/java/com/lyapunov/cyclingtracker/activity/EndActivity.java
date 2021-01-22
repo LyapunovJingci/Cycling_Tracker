@@ -71,6 +71,7 @@ public class EndActivity extends AppCompatActivity {
         double[] finishData = getIntent().getDoubleArrayExtra("FinishData");
         String[] finishUnit = getIntent().getStringArrayExtra("FinishUnit");
         double finishTime = getIntent().getDoubleExtra("FinishTime", 0);
+        String city = getIntent().getStringExtra("FinishCity");
 
         StringBuildHelper stringHelper = new StringBuildHelper();
         TimeConvertHelper timeHelper = new TimeConvertHelper();
@@ -105,6 +106,7 @@ public class EndActivity extends AppCompatActivity {
             dataToSave.put(ConstantValues.AVGSPEED_KEY, finishData[2]);
             dataToSave.put(ConstantValues.HIGHSPEED_KEY, finishData[1]);
             dataToSave.put(ConstantValues.RATE_KEY, 0);
+            dataToSave.put(ConstantValues.CITY_KEY, city);
         }
         Snackbar snackbarSuccess = Snackbar.make(findViewById(R.id.coordinator), "Sync successfully with cloud.", Snackbar.LENGTH_LONG);
         snackbarSuccess.setAction("UNDO", new MyUndoListener());

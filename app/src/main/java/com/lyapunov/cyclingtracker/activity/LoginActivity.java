@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .setTheme(R.style.Theme_TestApp)
                                     .setAvailableProviders(Arrays.asList(
                                             new AuthUI.IdpConfig.GoogleBuilder().build(),
+                                            new AuthUI.IdpConfig.GitHubBuilder().build(),
                                             new AuthUI.IdpConfig.EmailBuilder().build()))
                                     .build(),
                             RC_SIGN_IN);

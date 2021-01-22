@@ -49,14 +49,14 @@ public class HistoryActivity extends AppCompatActivity implements HistoryActivit
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document: task.getResult()) {
-                        Log.e("IDDDD",document.getId() );
                         history_id_list.add(document.getId());
                         Timestamp timestamp = (Timestamp) document.getData().get(ConstantValues.DATE_KEY);
                         Date date = timestamp.toDate();
                         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy, HH:mm");
                         String strDate = dateFormat.format(date);
-                        history_list.add(strDate);
-                        //history_list.add(String.valueOf(document.getData().get(ConstantValues.DISTANCE_KEY)));
+                        String city = (String) document.getData().get(ConstantValues.CITY_KEY);
+                        String item = strDate + "\n" + city;
+                        history_list.add(item);
                     }
                     mAdapter = new HistoryActivityAdapter(history_list.size(), history_list, HistoryActivity.this::onHistoryResultClick);
                     mRecyclerView.setAdapter(mAdapter);

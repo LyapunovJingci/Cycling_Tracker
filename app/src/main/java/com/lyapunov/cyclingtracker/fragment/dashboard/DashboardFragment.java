@@ -12,6 +12,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,9 @@ import com.lyapunov.cyclingtracker.activity.EndActivity;
 import com.lyapunov.cyclingtracker.activity.MainActivity;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.Mediator;
-import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
+import com.lyapunov.cyclingtracker.networking.AddressCaller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -78,6 +80,8 @@ public class DashboardFragment extends Fragment {
     private static double distanceChanged = 0;
     private static double heightChanged = 0;
 
+    private String city = "";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,6 +125,7 @@ public class DashboardFragment extends Fragment {
                 Pause.togglePause(!isChecked);
                 Mediator.getMediator().setPaused(!isChecked);
                 if(Pause.isPause()){
+
                     togglePauseButton.setBackgroundResource(R.drawable.go_btn);
                     togglePauseButton.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pauseanimation));
                 }
@@ -128,6 +133,25 @@ public class DashboardFragment extends Fragment {
                     togglePauseButton.setBackgroundResource(R.drawable.pausebtn);
                     togglePauseButton.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.pauseanimation));
                     togglePauseButton.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.fadeout));
+                    Thread t = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+//                                if (city.length() != 0) {
+//                                    return;
+//                                }
+                                city = AddressCaller.getAddressCaller().fetchCityData(MainActivity.locationListener.getLat(), MainActivity.locationListener.getLong());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    try {
+                        t.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    t.start();
                 }
             }
         });
@@ -146,7 +170,6 @@ public class DashboardFragment extends Fragment {
                 } else {
                     showStatus();
                 }
-                MapFragment.reset();
                 db.clearDB();
             }
         });
@@ -234,6 +257,7 @@ public class DashboardFragment extends Fragment {
                         intent.putExtra("FinishData", finishData);
                         intent.putExtra("FinishUnit", finishUnit);
                         intent.putExtra("FinishTime", finishTime);
+                        intent.putExtra("FinishCity", city);
                         startActivity(intent);
                     }
                 })

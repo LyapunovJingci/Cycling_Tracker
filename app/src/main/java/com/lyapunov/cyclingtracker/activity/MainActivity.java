@@ -5,7 +5,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lyapunov.cyclingtracker.R;
 import com.lyapunov.cyclingtracker.fragment.dashboard.locListener;
-import com.lyapunov.cyclingtracker.fragment.map.MapFragment;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -18,11 +17,9 @@ import androidx.navigation.ui.NavigationUI;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.location.LocationListener;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 import android.Manifest;
@@ -68,20 +65,6 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
         }
 
-        /**
-         * Permissions based on osmdroid article "How to use the osmdroid
-         * library": https://github.com/osmdroid/osmdroid/wiki/How-to-use-the-osmdroid-library
-         * and osmdroid YouTube tutorial: https://www.youtube.com/watch?v=_VRPk45goBA
-         *
-         * This function calls requestPermissionsIfNecessary() which is taken from the
-         * osmdroid YouTube tutorial: https://www.youtube.com/watch?v=_VRPk45goBA (cited below as well)
-         *
-         *
-         * Note: TUTORIAL also recommended allowing for write/read externalstorage
-         * through Manifest.permission.WRITE_EXTERNAL_STORAGE and Manifest.permission.READ_EXTERNAL_STORAGE
-         * (which allows offline access). I eliminated those so the app wouldn't have access to external
-         * files (which could be a security issue), but we can add back in if cache size becomes an issue
-         */
         requestPermissionsIfNecessary(new String[]{
                 Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE,
                 Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.INTERNET
@@ -93,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         providers = locationManager.getProviders(true);
 
-        if (!providers.contains(LocationManager.GPS_PROVIDER)) {
-            //Toast.makeText(getApplicationContext(), "No GPS provider", Toast.LENGTH_SHORT).show();
-        }
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -113,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
                     double latitude = location.getLatitude();
                     double longitude = location.getLongitude();
                     locListener.setLatLong(latitude, longitude);
-                    MapFragment.setLatLong(latitude, longitude);
                 }
             }
         }
@@ -190,7 +169,6 @@ public class MainActivity extends AppCompatActivity {
                         .show();
 
                 }
-
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -46,13 +46,12 @@ public class MapsFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            map.setMinZoomPreference(10);
+            map.setMinZoomPreference(15);
             latitude = MainActivity.locationListener.getLat();
             longitude = MainActivity.locationListener.getLong();
             prelatitude = MainActivity.locationListener.getLat();
             prelongitude = MainActivity.locationListener.getLong();
             LatLng local = new LatLng(latitude, longitude);
-            //googleMap.addMarker(new MarkerOptions().position(local));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(local));
 
             //Log.d("eeee", latitude.toString());
