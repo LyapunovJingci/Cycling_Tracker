@@ -64,7 +64,26 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="_0">0</string>
+    <string name="_0_0">0.0</string>
+
+    <string name="altitude">Altitude</string>
+    <string name="acceleration">Acceleration</string>
+    <string name="distance">Distance</string>
+    <string name="speed">Speed</string>
+    <string name="closest_avg_speed">Closest Avg. Speed</string>
+
+    <string name="total_time">Total Time</string>
+    <string name="moving_time">Moving Time</string>
+    <string name="stopped_time">Stopped Time</string>
+
+    <string name="reset">RESET</string>
+    <string name="end">END</string>
+
+    <string name="high_score">High Score</string>
+    <string name="speed_history">Speed History</string>
+    <string name="speed_m_s">Speed (m/s)</string>
+    <string name="time_s">Time (s)</string>
 
 </resources>
