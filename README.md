@@ -24,6 +24,7 @@ The basic code structure of this demo was an one-month group project in the clas
 
 ## 📝Library Usage
 
+* [Room](https://developer.android.com/jetpack/androidx/releases/room)
 * [OkHttp](https://github.com/square/okhttp)
 * [Picasso](https://github.com/square/picasso) 
 * [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart)
