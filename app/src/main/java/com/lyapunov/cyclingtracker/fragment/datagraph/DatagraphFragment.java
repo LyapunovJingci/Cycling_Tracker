@@ -1,12 +1,11 @@
 package com.lyapunov.cyclingtracker.fragment.datagraph;
 
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,12 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IFillFormatter;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.lyapunov.cyclingtracker.DatabaseConstruct;
 import com.lyapunov.cyclingtracker.R;
+import com.lyapunov.cyclingtracker.database.CycleDatabase;
 import com.lyapunov.cyclingtracker.fragment.Mediator;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,11 +29,9 @@ import java.util.TimerTask;
  * A simple {@link Fragment} subclass.
  */
 public class DatagraphFragment extends Fragment {
-    private DatabaseConstruct db;
     private LineChart lineChart;
     private ArrayList<Entry> values;
     private static Timer timer = new Timer();
-    SharedPreferences sharedPref;
     private static boolean init = true;
     public View view;
 
@@ -54,10 +49,9 @@ public class DatagraphFragment extends Fragment {
 
         lineChart = view.findViewById(R.id.lineChart);
 
-        db = new DatabaseConstruct(getActivity());
         values = new ArrayList<>();
         setData();
-        setHighScores(view);
+        setHighScores();
         display_font_size();
         return view;
     }
@@ -86,30 +80,22 @@ public class DatagraphFragment extends Fragment {
      * Provides data to fill the graph from the database.
      */
     public void setData(){
-
         values.clear();
-        Cursor result = db.getLast10(); //return the most recent 10 data saved
-        if (result.getCount() == 0) {//patch to fix crash in case no data is in DB
-            db.clearDB();
-            result = db.getLast10(); //updates cursor after inserting the 0's
-        }
-        result.moveToLast(); // move to the first row of the cursor before reading it
+        Thread thread = new Thread(() -> {
+            List<Double> list = CycleDatabase.getInstance(getActivity()).cycleDataDao().getLastTenSpeed();
+            Log.e("LIST GET", list.size() + "");
+            for (int i = 0; i < 10; i++) {
+                values.add(new Entry(i, list.get(i).floatValue()));
+            }
+            LineDataSet lineDataSet = new LineDataSet(values, "Time");
+            formatLineData(lineDataSet);
+            LineData lineData = new LineData(lineDataSet);
+            formatChart();
 
-        int index = 0;
-        do {
-            double speed = result.getDouble(result.getColumnIndex("SPEED"));
-            double calculatedSpeed = convertSpeedUnit(Mediator.getMediator().getSpeedMeasure(), speed);
-            values.add(new Entry(index, (float)calculatedSpeed)); //keep adding each speed to the list
-            index++;
-        } while (result.moveToPrevious());
-
-        LineDataSet lineDataSet = new LineDataSet(values, "Time");
-        formatLineData(lineDataSet);
-        LineData lineData = new LineData(lineDataSet);
-        formatChart();
-
-        lineChart.setData(lineData);
-        lineChart.invalidate();
+            lineChart.setData(lineData);
+            lineChart.invalidate();
+        });
+        thread.start();
     }
     /**
      * Formats the chart colors, legengs, axes, etc.
@@ -123,7 +109,6 @@ public class DatagraphFragment extends Fragment {
         lineChart.getAxisLeft().setEnabled(true); //show y-axis at left
         lineChart.getAxisLeft().setTextColor(Color.WHITE);
         lineChart.getLegend().setTextColor(Color.WHITE);
-        //  lineChart.animateXY(2200,2200, Easing.EaseInSine);
         lineChart.getDescription().setEnabled(false);
         lineChart.getLegend().setEnabled(false);
     }
@@ -143,31 +128,25 @@ public class DatagraphFragment extends Fragment {
         lineDataSet.setFillAlpha(200);
         lineDataSet.setDrawValues(false);
         lineDataSet.setDrawFilled(true);
-        lineDataSet.setFillFormatter(new IFillFormatter() {
-            @Override
-            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
-                return lineChart.getAxisLeft().getAxisMinimum();
-            }
-        });
+        lineDataSet.setFillFormatter((dataSet, dataProvider) -> lineChart.getAxisLeft().getAxisMinimum());
     }
 
     /**
      * Sets current high scores
-     * @param view -- current view to get the Textview from
      */
-    public void setHighScores(View view){
-        Cursor cursor = db.get_Highest();
-        if (cursor.getCount() == 0){
-            db.insert_Highest(0,0,0);
-            displaySpeed(0);
-            displayHeight(0);
-        } else {
-            cursor.moveToLast();
-            double bestSpeed = cursor.getDouble(cursor.getColumnIndex("SPEED"));
-            double bestHeight = cursor.getDouble(cursor.getColumnIndex("ALTITUDE"));
-            displaySpeed(bestSpeed);
-            displayHeight(bestHeight);
-        }
+    public void setHighScores(){
+        Thread thread = new Thread(() -> {
+           double height =  CycleDatabase.getInstance(getActivity()).cycleDataDao().getHighestAltitude();
+           double speed = CycleDatabase.getInstance(getActivity()).cycleDataDao().getHighestSpeed();
+           setHighScore(height, speed);
+        });
+        thread.start();
+
+    }
+
+    private void setHighScore(double height, double speed) {
+        displayHeight(height);
+        displaySpeed(speed);
     }
 
 

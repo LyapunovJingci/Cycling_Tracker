@@ -126,7 +126,7 @@
 
 
     <TextView
-        android:id="@+id/speedInstant"
+        android:id="@+id/speed_instant"
         android:layout_width="148dp"
         android:layout_height="90dp"
         android:layout_alignParentStart="true"

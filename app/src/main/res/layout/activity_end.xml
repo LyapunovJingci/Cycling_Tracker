@@ -25,19 +25,29 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <com.airbnb.lottie.LottieAnimationView
+<!--    <com.airbnb.lottie.LottieAnimationView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="140dp"-->
+<!--        android:layout_height="140dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/konfettiView"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/konfettiView"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/konfettiView"-->
+<!--        app:lottie_autoPlay="true"-->
+<!--        app:lottie_fileName="bicycle_annimation.json"-->
+<!--        app:lottie_loop="true">-->
+
+<!--    </com.airbnb.lottie.LottieAnimationView>-->
+
+    <ImageView
         android:id="@+id/imageView"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="@+id/konfettiView"
         app:layout_constraintStart_toStartOf="@+id/konfettiView"
-        app:layout_constraintTop_toTopOf="@+id/konfettiView"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="bicycle_annimation.json"
-        app:lottie_loop="true">
+        app:layout_constraintTop_toTopOf="parent">
 
-    </com.airbnb.lottie.LottieAnimationView>
+    </ImageView>
 
     <TextView
         android:layout_width="match_parent"
