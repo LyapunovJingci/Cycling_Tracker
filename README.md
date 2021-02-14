@@ -38,6 +38,10 @@ The basic code structure of this demo was an one-month group project in the clas
 <img src="screenshots/finish.png" width="45%">&#160;<img src="screenshots/history.png" width="45%">
 <img src="screenshots/setting.png" width="45%">&#160;<img src="screenshots/login.png" width="45%">
 
+## ✍️design
+
+<img src="screenshots/structure.png" width="75%">
+
 ## License
 
 MIT License
