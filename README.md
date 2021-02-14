@@ -40,7 +40,7 @@ The basic code structure of this demo was an one-month group project in the clas
 
 ## ✍️design
 
-<img src="screenshots/structure.png" width="75%">
+<img src="screenshots/structure.png" width="90%">
 
 ## License
 
